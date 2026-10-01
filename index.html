@@ -5,19 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>JEE Tracker — Preparation Dashboard</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-
 <style>
 :root{
   --bg:#F6F7F9;
-  --surface:#FFFFFF;
+  --surface:#fff;
   --surface-2:#F0F1F4;
   --border:#E3E6EB;
   --text:#171B23;
-  --text-muted:#6B7280;
-  --text-faint:#9AA1AC;
+  --muted:#6B7280;
+  --faint:#9AA1AC;
   --accent:#3E63DD;
   --accent-soft:#E9EDFD;
   --physics:#2F6FED;
@@ -28,14 +24,11 @@
   --maths-soft:#FBEEDD;
   --danger:#E5484D;
   --danger-soft:#FCEBEC;
-  --test:#8B5CF6;
-  --test-soft:#F0EAFE;
-  --radius-lg:16px;
-  --radius-md:10px;
-  --radius-sm:7px;
-  --shadow-card:0 1px 2px rgba(20,24,32,.04),0 6px 20px rgba(20,24,32,.04);
-  --font-ui:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',monospace;
+  --radius:16px;
+  --shadow:0 1px 2px rgba(20,24,32,.04),
+            0 6px 20px rgba(20,24,32,.04);
+
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:light;
 }
 
@@ -45,8 +38,8 @@ html.dark{
   --surface-2:#1B1F27;
   --border:#262B34;
   --text:#E8EAED;
-  --text-muted:#9AA1AC;
-  --text-faint:#6B7280;
+  --muted:#9AA1AC;
+  --faint:#6B7280;
   --accent:#6E8CF5;
   --accent-soft:#1D2440;
   --physics:#5B8DF9;
@@ -57,83 +50,70 @@ html.dark{
   --maths-soft:#2C2110;
   --danger:#F5716F;
   --danger-soft:#2B1518;
-  --test:#A78BFA;
-  --test-soft:#251C3D;
-  --shadow-card:0 1px 0 rgba(0,0,0,.2);
   color-scheme:dark;
 }
 
-*{box-sizing:border-box;}
+*{
+  box-sizing:border-box;
+}
 
 html,body{
-  padding:0;
   margin:0;
+  padding:0;
 }
 
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:var(--font-ui);
-  -webkit-font-smoothing:antialiased;
   min-height:100vh;
-  transition:background .25s ease,color .25s ease;
+  -webkit-font-smoothing:antialiased;
 }
 
-::selection{background:var(--accent-soft);}
-
-button,input,select{font-family:inherit;}
-button{cursor:pointer;}
-.mono{font-family:var(--font-mono);}
-
-@media (prefers-reduced-motion:reduce){
-  *{
-    animation-duration:.001ms!important;
-    transition-duration:.001ms!important;
-  }
+button,input,textarea{
+  font:inherit;
 }
 
-/* ============================= LAYOUT ============================= */
-
-.app{
-  max-width:880px;
-  margin:0 auto;
-  padding:0 16px 64px;
+button{
+  cursor:pointer;
 }
+
+.mono{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+/* TOP BAR */
 
 .topbar{
   position:sticky;
   top:0;
   z-index:20;
-  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border);
 }
 
-.topbar-inner{
+.topbar-inner,
+.tabs,
+.app{
   max-width:880px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:16px 16px 10px;
+  margin:auto;
 }
 
-.brand{
+.topbar-inner{
   display:flex;
-  flex-direction:column;
-  gap:1px;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 16px 10px;
 }
 
 .brand-name{
   font-weight:800;
   font-size:17px;
-  letter-spacing:-.01em;
 }
 
 .brand-sub{
   font-size:11px;
-  color:var(--text-faint);
-  font-family:var(--font-mono);
+  color:var(--faint);
   text-transform:uppercase;
   letter-spacing:.06em;
 }
@@ -141,31 +121,19 @@ button{cursor:pointer;}
 .theme-toggle{
   width:38px;
   height:38px;
-  border-radius:999px;
+  border-radius:50%;
   border:1px solid var(--border);
   background:var(--surface);
-  display:flex;
-  align-items:center;
-  justify-content:center;
   color:var(--text);
 }
 
-.theme-toggle:active{
-  transform:scale(.92);
-}
-
-.theme-toggle svg{
-  width:18px;
-  height:18px;
-}
+/* TABS */
 
 .tabs{
   display:flex;
   gap:4px;
   overflow-x:auto;
   padding:0 16px 10px;
-  max-width:880px;
-  margin:0 auto;
   scrollbar-width:none;
 }
 
@@ -174,20 +142,14 @@ button{cursor:pointer;}
 }
 
 .tab-btn{
-  flex:0 0 auto;
-  border:none;
+  border:0;
   background:transparent;
-  color:var(--text-muted);
-  font-size:13.5px;
+  color:var(--muted);
+  font-size:13px;
   font-weight:600;
   padding:8px 12px;
   border-radius:999px;
   white-space:nowrap;
-}
-
-.tab-btn:hover{
-  background:var(--surface-2);
-  color:var(--text);
 }
 
 .tab-btn.active{
@@ -200,8 +162,10 @@ html.dark .tab-btn.active{
   color:#0C0E12;
 }
 
-main{
-  padding-top:18px;
+/* APP */
+
+.app{
+  padding:18px 16px 64px;
 }
 
 .panel{
@@ -210,27 +174,25 @@ main{
 
 .panel.active{
   display:block;
-  animation:fadeSlideIn .38s cubic-bezier(.2,.7,.3,1);
+  animation:fade .25s ease;
 }
 
-@keyframes fadeSlideIn{
+@keyframes fade{
   from{
     opacity:0;
-    transform:translateY(8px);
+    transform:translateY(5px);
   }
   to{
     opacity:1;
-    transform:translateY(0);
+    transform:none;
   }
 }
-
-/* ============================= CARDS ============================= */
 
 .card{
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
 }
 
 .section-title{
@@ -238,7 +200,7 @@ main{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:.07em;
-  color:var(--text-faint);
+  color:var(--faint);
   margin:26px 2px 10px;
 }
 
@@ -246,10 +208,10 @@ main{
   margin-top:0;
 }
 
-/* ============================= DASHBOARD ============================= */
+/* DASHBOARD */
 
 .hero-card{
-  padding:26px 22px 22px;
+  padding:24px 20px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -257,29 +219,31 @@ main{
   text-align:center;
 }
 
-.ring-wrap{
+.ring{
   position:relative;
   width:172px;
   height:172px;
 }
 
-.ring-wrap svg{
+.ring svg{
   width:100%;
   height:100%;
+  transform:rotate(-90deg);
+}
+
+.ring circle{
+  fill:none;
+  stroke-width:11;
 }
 
 .ring-bg{
-  fill:none;
   stroke:var(--surface-2);
-  stroke-width:11;
 }
 
 .ring-fg{
-  fill:none;
   stroke:var(--accent);
-  stroke-width:11;
   stroke-linecap:round;
-  transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.3,1);
+  transition:stroke-dashoffset .5s;
 }
 
 .ring-center{
@@ -287,27 +251,24 @@ main{
   inset:0;
   display:flex;
   flex-direction:column;
-  align-items:center;
   justify-content:center;
-  gap:2px;
+  align-items:center;
 }
 
 .ring-pct{
-  font-family:var(--font-mono);
   font-size:34px;
   font-weight:700;
 }
 
 .ring-label{
   font-size:11px;
-  color:var(--text-faint);
+  color:var(--faint);
   text-transform:uppercase;
-  letter-spacing:.06em;
 }
 
 .hero-meta{
   display:flex;
-  gap:22px;
+  gap:24px;
   flex-wrap:wrap;
   justify-content:center;
 }
@@ -315,80 +276,56 @@ main{
 .hero-meta-item{
   display:flex;
   flex-direction:column;
-  align-items:center;
   gap:2px;
 }
 
 .hero-meta-val{
-  font-family:var(--font-mono);
-  font-weight:700;
   font-size:19px;
+  font-weight:700;
 }
 
 .hero-meta-key{
   font-size:11px;
-  color:var(--text-faint);
-}
-
-.exam-date-box{
-  width:100%;
-  max-width:360px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  text-align:left;
-}
-
-.exam-date-box label{
-  font-size:11.5px;
-  color:var(--text-muted);
-  font-weight:600;
-}
-
-.exam-date-input{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--surface-2);
-  color:var(--text);
-  border-radius:var(--radius-md);
-  padding:9px 11px;
-  font-size:13px;
-  outline:none;
-}
-
-.exam-date-input:focus{
-  border-color:var(--accent);
+  color:var(--faint);
 }
 
 .goal-bar-row{
   width:100%;
   max-width:360px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
 }
 
 .goal-bar-caption{
   display:flex;
   justify-content:space-between;
   font-size:11.5px;
-  color:var(--text-muted);
+  color:var(--muted);
+  margin-bottom:6px;
 }
 
-.goal-bar-track{
-  width:100%;
+.bar{
   height:8px;
-  border-radius:999px;
+  border-radius:99px;
   background:var(--surface-2);
   overflow:hidden;
 }
 
-.goal-bar-fill{
+.fill{
   height:100%;
-  border-radius:999px;
+  border-radius:99px;
   background:linear-gradient(90deg,var(--accent),var(--physics));
-  transition:width .7s cubic-bezier(.2,.7,.3,1);
+  transition:width .5s;
 }
+
+.weak-badge{
+  font-size:12px;
+  font-weight:600;
+  padding:6px 12px;
+  border-radius:999px;
+  background:var(--danger-soft);
+  color:var(--danger);
+}
+
+/* SUBJECT BREAKDOWN */
 
 .subject-progress-card{
   padding:18px 20px;
@@ -397,15 +334,15 @@ main{
 .subject-row{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
   padding:10px 0;
 }
 
-.subject-row + .subject-row{
+.subject-row+.subject-row{
   border-top:1px solid var(--border);
 }
 
-.subject-dot{
+.dot{
   width:9px;
   height:9px;
   border-radius:50%;
@@ -419,25 +356,18 @@ main{
 }
 
 .subject-row-pct{
-  font-family:var(--font-mono);
-  font-weight:700;
-  font-size:14px;
   width:44px;
   text-align:right;
+  font-size:13px;
+  font-weight:700;
 }
 
-.subject-bar-track{
+.subject-row .bar{
   flex:2;
   height:7px;
-  border-radius:999px;
-  background:var(--surface-2);
-  overflow:hidden;
 }
 
-.subject-bar-fill{
-  height:100%;
-  border-radius:999px;
-}
+/* STATS */
 
 .stat-grid{
   display:grid;
@@ -447,41 +377,24 @@ main{
 
 .stat-tile{
   padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:4px;
 }
 
 .stat-val{
-  font-family:var(--font-mono);
-  font-size:22px;
+  font-size:21px;
   font-weight:700;
 }
 
 .stat-key{
   font-size:12px;
-  color:var(--text-muted);
+  color:var(--muted);
+  margin-top:4px;
 }
 
-.weak-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  font-size:12.5px;
-  font-weight:600;
-  padding:6px 12px;
-  border-radius:999px;
-  background:var(--danger-soft);
-  color:var(--danger);
-}
-
-/* ============================= SUBJECT PAGES ============================= */
+/* SUBJECT PAGES */
 
 .subject-header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:10px;
   margin-bottom:14px;
 }
 
@@ -494,64 +407,65 @@ main{
 .subject-title h2{
   margin:0;
   font-size:19px;
-  font-weight:800;
 }
 
-.subject-title .mono{
+.subject-title span{
+  color:var(--faint);
   font-size:13px;
-  color:var(--text-faint);
 }
 
 .toolbar{
   display:flex;
   gap:8px;
-  margin-bottom:14px;
   flex-wrap:wrap;
+  margin-bottom:14px;
 }
 
-.search-input{
+.search,
+.field input,
+.field textarea{
   flex:1;
   min-width:160px;
   border:1px solid var(--border);
   background:var(--surface);
-  border-radius:var(--radius-md);
-  padding:9px 12px;
-  font-size:13.5px;
   color:var(--text);
+  border-radius:10px;
+  padding:9px 12px;
   outline:none;
 }
 
-.search-input:focus{
-  border-color:var(--accent);
+.field textarea{
+  resize:vertical;
+  min-height:80px;
 }
 
-.filter-seg{
+.filter{
   display:flex;
   border:1px solid var(--border);
-  border-radius:var(--radius-md);
+  border-radius:10px;
   overflow:hidden;
 }
 
-.filter-seg button{
-  border:none;
-  background:var(--surface);
-  color:var(--text-muted);
-  font-size:12.5px;
-  font-weight:600;
-  padding:9px 11px;
+.filter button{
+  border:0;
   border-right:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  padding:9px 11px;
+  font-size:12px;
+  font-weight:600;
 }
 
-.filter-seg button:last-child{
-  border-right:none;
+.filter button:last-child{
+  border:0;
 }
 
-.filter-seg button.active{
+.filter button.active{
   background:var(--text);
   color:var(--bg);
 }
 
-html.dark .filter-seg button.active{
+html.dark .filter button.active{
   background:var(--accent);
   color:#0C0E12;
 }
@@ -560,21 +474,10 @@ html.dark .filter-seg button.active{
   border:1px solid var(--border);
   background:var(--surface);
   color:var(--text);
-  border-radius:var(--radius-md);
+  border-radius:10px;
   padding:9px 14px;
   font-size:13px;
   font-weight:600;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-}
-
-.btn:hover{
-  background:var(--surface-2);
-}
-
-.btn:active{
-  transform:scale(.97);
 }
 
 .btn-primary{
@@ -590,7 +493,6 @@ html.dark .btn-primary{
 
 .btn-danger{
   color:var(--danger);
-  border-color:var(--danger-soft);
 }
 
 .btn-sm{
@@ -604,80 +506,47 @@ html.dark .btn-primary{
   margin-bottom:14px;
 }
 
-.chapter-list{
+.chapter-list,
+.item-list{
   display:flex;
   flex-direction:column;
   gap:10px;
 }
 
-.chapter-card{
-  padding:16px 16px 14px;
+.chapter-card,
+.item-card{
+  padding:16px;
 }
 
-.chapter-top{
+.chapter-top,
+.item-top{
   display:flex;
-  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
-}
-
-.chapter-name-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex:1;
-  min-width:0;
 }
 
 .chapter-name{
   font-weight:700;
   font-size:14.5px;
-  line-height:1.3;
-  word-break:break-word;
 }
 
-.chapter-name-input{
-  flex:1;
-  border:1px solid var(--accent);
-  border-radius:var(--radius-sm);
-  padding:5px 8px;
-  font-size:14.5px;
-  font-weight:700;
-  background:var(--surface);
-  color:var(--text);
-  outline:none;
-}
-
-.chapter-actions{
+.actions{
   display:flex;
   gap:4px;
 }
 
-.icon-btn{
+.icon{
   width:28px;
   height:28px;
-  border-radius:8px;
-  border:1px solid transparent;
+  border:0;
   background:transparent;
-  color:var(--text-faint);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  color:var(--faint);
+  border-radius:8px;
 }
 
-.icon-btn:hover{
+.icon:hover{
   background:var(--surface-2);
   color:var(--text);
-}
-
-.icon-btn.danger:hover{
-  background:var(--danger-soft);
-  color:var(--danger);
-}
-
-.icon-btn svg{
-  width:15px;
-  height:15px;
 }
 
 .chapter-pct-row{
@@ -688,10 +557,9 @@ html.dark .btn-primary{
 }
 
 .chapter-pct{
-  font-family:var(--font-mono);
-  font-weight:700;
-  font-size:13px;
   width:38px;
+  font-size:13px;
+  font-weight:700;
 }
 
 .segbar{
@@ -702,8 +570,8 @@ html.dark .btn-primary{
 
 .seg{
   height:7px;
-  border-radius:3px;
   flex:1;
+  border-radius:3px;
   background:var(--surface-2);
 }
 
@@ -719,224 +587,206 @@ html.dark .btn-primary{
   }
 }
 
-.check-chip{
+.check{
   display:flex;
   align-items:center;
   gap:7px;
   border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:8px 9px;
-  font-size:12.5px;
-  font-weight:500;
-  color:var(--text-muted);
+  border-radius:7px;
+  padding:8px;
+  font-size:12px;
+  color:var(--muted);
   background:var(--surface-2);
-  transition:all .15s ease;
-  user-select:none;
+  cursor:pointer;
 }
 
-.check-chip:active{
-  transform:scale(.97);
+.check.checked{
+  color:var(--text);
 }
 
-.check-chip .box{
+.box{
   width:15px;
   height:15px;
+  border:1.5px solid var(--faint);
   border-radius:4px;
-  border:1.5px solid var(--text-faint);
+  display:grid;
+  place-items:center;
   flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
-.check-chip .box svg{
-  width:10px;
-  height:10px;
+.check.checked .box{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:white;
+}
+
+.box:after{
+  content:"✓";
+  font-size:10px;
   opacity:0;
 }
 
-.check-chip.checked{
-  color:var(--text);
-  border-color:transparent;
-}
-
-.check-chip.checked .box svg{
+.check.checked .box:after{
   opacity:1;
 }
 
 .revised-row{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
   margin-top:12px;
   padding-top:12px;
   border-top:1px solid var(--border);
-}
-
-.revised-label{
   font-size:11.5px;
-  color:var(--text-faint);
+  color:var(--faint);
 }
 
-.revised-input{
+.date{
   border:1px solid var(--border);
   background:var(--surface);
-  color:var(--text-muted);
-  border-radius:var(--radius-sm);
+  color:var(--muted);
+  border-radius:7px;
   padding:5px 8px;
   font-size:12px;
-  font-family:var(--font-mono);
 }
 
-.empty-state{
-  text-align:center;
-  padding:40px 20px;
-  color:var(--text-faint);
-  font-size:13.5px;
+/* FORMS */
+
+.form-card{
+  padding:18px;
 }
 
-/* ============================= TESTS ============================= */
-
-.test-tabs{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  margin-bottom:14px;
-  scrollbar-width:none;
-}
-
-.test-tabs::-webkit-scrollbar{
-  display:none;
-}
-
-.test-type-btn{
-  flex:0 0 auto;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text-muted);
-  border-radius:999px;
-  padding:8px 12px;
-  font-size:12.5px;
-  font-weight:600;
-}
-
-.test-type-btn.active{
-  background:var(--test);
-  color:#fff;
-  border-color:var(--test);
-}
-
-.test-add-form{
+.form-row{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-bottom:14px;
 }
 
-.test-add-form input{
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
   flex:1;
-  min-width:140px;
+}
+
+.field label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+}
+
+/* TESTS */
+
+.test-tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.test-tabs button{
   border:1px solid var(--border);
   background:var(--surface);
-  color:var(--text);
-  border-radius:var(--radius-md);
-  padding:9px 11px;
-  font-size:13px;
-  outline:none;
+  color:var(--muted);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.test-tabs button.active{
+  background:var(--text);
+  color:var(--bg);
+}
+
+html.dark .test-tabs button.active{
+  background:var(--accent);
+  color:#0C0E12;
 }
 
 .test-list{
   display:flex;
   flex-direction:column;
+  gap:8px;
+}
+
+.test-row{
+  display:flex;
+  align-items:center;
   gap:10px;
-}
-
-.test-card{
-  padding:15px 16px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.test-check{
-  width:22px;
-  height:22px;
-  border-radius:6px;
-  border:1.5px solid var(--text-faint);
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
   background:var(--surface);
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
-.test-check.checked{
-  background:var(--test);
-  border-color:var(--test);
-}
-
-.test-check svg{
-  width:14px;
-  height:14px;
-  stroke:#fff;
-  opacity:0;
-}
-
-.test-check.checked svg{
-  opacity:1;
+.test-row.done{
+  opacity:.6;
 }
 
 .test-info{
   flex:1;
-  min-width:0;
 }
 
-.test-name{
-  font-size:14px;
-  font-weight:700;
-  word-break:break-word;
+.test-title{
+  font-weight:600;
+  font-size:13px;
 }
 
 .test-date{
+  font-size:11px;
+  color:var(--faint);
   margin-top:3px;
-  font-size:11.5px;
-  color:var(--text-faint);
-  font-family:var(--font-mono);
 }
 
-.test-actions{
+.test-check{
+  width:20px;
+  height:20px;
+  border:1.5px solid var(--faint);
+  border-radius:5px;
+  background:transparent;
+  color:white;
+}
+
+.test-row.done .test-check{
+  background:var(--chemistry);
+  border-color:var(--chemistry);
+}
+
+/* COMMON ERRORS / TARGETS */
+
+.item-card{
   display:flex;
-  gap:4px;
+  align-items:flex-start;
+  gap:10px;
 }
 
-.test-count-strip{
-  margin-bottom:14px;
-  padding:14px 16px;
-  background:var(--test-soft);
-  border-radius:var(--radius-md);
-  display:flex;
-  align-items:baseline;
-  gap:8px;
+.item-card .check{
+  flex:1;
+  background:transparent;
 }
 
-.test-count-number{
-  font-family:var(--font-mono);
-  font-size:25px;
-  font-weight:800;
-  color:var(--test);
+.item-text{
+  white-space:pre-wrap;
+  line-height:1.45;
+  font-size:13px;
 }
 
-.test-count-label{
-  font-size:12.5px;
-  color:var(--text-muted);
+.item-meta{
+  display:block;
+  font-size:11px;
+  color:var(--faint);
+  margin-top:5px;
 }
 
-/* ============================= DATA ============================= */
-
-.data-card{
-  padding:20px;
+.empty{
+  text-align:center;
+  padding:34px 15px;
+  color:var(--faint);
+  font-size:13px;
 }
+
+/* DATA */
 
 .data-actions{
   display:flex;
@@ -946,16 +796,26 @@ html.dark .btn-primary{
 
 .hint{
   font-size:12px;
-  color:var(--text-faint);
+  color:var(--faint);
   line-height:1.5;
-  margin-top:12px;
+  margin-top:10px;
 }
 
 footer{
   text-align:center;
   padding:26px 0 6px;
   font-size:11.5px;
-  color:var(--text-faint);
+  color:var(--faint);
+}
+
+@media(max-width:480px){
+  .stat-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-row>*{
+    min-width:100%;
+  }
 }
 </style>
 </head>
@@ -965,324 +825,763 @@ footer{
 <div class="topbar">
 
   <div class="topbar-inner">
-    <div class="brand">
+    <div>
       <div class="brand-name">JEE Tracker</div>
       <div class="brand-sub">Preparation Dashboard</div>
     </div>
 
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round"></svg>
-    </button>
+    <button class="theme-toggle" id="themeToggle">◐</button>
   </div>
 
   <div class="tabs" id="tabs">
-    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
-    <button class="tab-btn" data-tab="physics">Physics</button>
-    <button class="tab-btn" data-tab="chemistry">Chemistry</button>
-    <button class="tab-btn" data-tab="maths">Mathematics</button>
-    <button class="tab-btn" data-tab="tests">Tests</button>
-    <button class="tab-btn" data-tab="data">Data</button>
-  </div>
 
+    <button class="tab-btn active" data-tab="dashboard">
+      Dashboard
+    </button>
+
+    <button class="tab-btn" data-tab="physics">
+      Physics
+    </button>
+
+    <button class="tab-btn" data-tab="chemistry">
+      Chemistry
+    </button>
+
+    <button class="tab-btn" data-tab="maths">
+      Mathematics
+    </button>
+
+    <button class="tab-btn" data-tab="tests">
+      Tests
+    </button>
+
+    <button class="tab-btn" data-tab="errors">
+      Common Errors
+    </button>
+
+    <button class="tab-btn" data-tab="targets">
+      Daily Targets
+    </button>
+
+    <button class="tab-btn" data-tab="data">
+      Data
+    </button>
+
+  </div>
 </div>
 
+
 <div class="app">
+
 <main>
 
-<!-- ============================= DASHBOARD ============================= -->
+<!-- ================= DASHBOARD ================= -->
 
 <section class="panel active" id="panel-dashboard">
 
   <div class="card hero-card">
 
-    <div class="ring-wrap">
+    <div class="ring">
+
       <svg viewBox="0 0 120 120">
-        <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
-        <circle class="ring-fg" id="ringFg"
-                cx="60" cy="60" r="52"
-                transform="rotate(-90 60 60)"></circle>
+
+        <circle
+          class="ring-bg"
+          cx="60"
+          cy="60"
+          r="52"
+        />
+
+        <circle
+          class="ring-fg"
+          id="ringFg"
+          cx="60"
+          cy="60"
+          r="52"
+        />
+
       </svg>
 
       <div class="ring-center">
-        <div class="ring-pct" id="ringPct">0%</div>
-        <div class="ring-label">Overall</div>
+
+        <div class="ring-pct" id="ringPct">
+          0%
+        </div>
+
+        <div class="ring-label">
+          Overall
+        </div>
+
       </div>
+
     </div>
+
 
     <div class="hero-meta">
 
       <div class="hero-meta-item">
-        <div class="hero-meta-val mono" id="daysLeftVal">—</div>
-        <div class="hero-meta-key">Days left</div>
+
+        <div class="hero-meta-val mono" id="daysLeft">
+          —
+        </div>
+
+        <div class="hero-meta-key">
+          Days left
+        </div>
+
       </div>
 
-      <div class="hero-meta-item">
-        <div class="hero-meta-val mono" id="chCompletedVal">0</div>
-        <div class="hero-meta-key">Chapters done</div>
-      </div>
 
       <div class="hero-meta-item">
-        <div class="hero-meta-val mono" id="mockTestsVal">0</div>
-        <div class="hero-meta-key">Mock tests</div>
+
+        <div class="hero-meta-val mono" id="chaptersDone">
+          0
+        </div>
+
+        <div class="hero-meta-key">
+          Chapters done
+        </div>
+
+      </div>
+
+
+      <div class="hero-meta-item">
+
+        <div class="hero-meta-val mono" id="testsDone">
+          0
+        </div>
+
+        <div class="hero-meta-key">
+          Mock tests given
+        </div>
+
       </div>
 
     </div>
 
-    <div class="exam-date-box">
-      <label for="dashboardExamDate">Target exam date</label>
-      <input type="date" id="dashboardExamDate" class="exam-date-input">
-    </div>
 
     <div class="goal-bar-row">
 
       <div class="goal-bar-caption">
-        <span>Syllabus progress</span>
-        <span id="goalBarPct">0%</span>
+
+        <span>
+          Syllabus progress
+        </span>
+
+        <span id="goalPct">
+          0%
+        </span>
+
       </div>
 
-      <div class="goal-bar-track">
-        <div class="goal-bar-fill"
-             id="goalBarFill"
-             style="width:0%"></div>
+      <div class="bar">
+
+        <div
+          class="fill"
+          id="goalFill"
+          style="width:0%"
+        ></div>
+
       </div>
 
     </div>
 
-    <div id="weakBadgeWrap"></div>
+
+    <div id="weak"></div>
 
   </div>
 
-  <div class="section-title">Subject breakdown</div>
 
-  <div class="card subject-progress-card" id="subjectBreakdown"></div>
+  <div class="section-title">
+    Subject breakdown
+  </div>
 
-  <div class="section-title">Statistics</div>
+  <div
+    class="card subject-progress-card"
+    id="breakdown"
+  ></div>
 
-  <div class="stat-grid" id="statGrid"></div>
+
+  <div class="section-title">
+    Statistics
+  </div>
+
+  <div
+    class="stat-grid"
+    id="stats"
+  ></div>
 
 </section>
 
 
-<!-- ============================= PHYSICS ============================= -->
+<!-- ================= PHYSICS ================= -->
 
-<section class="panel" id="panel-physics">
+<section
+  class="panel"
+  id="panel-physics"
+>
 
   <div class="subject-header">
+
     <div class="subject-title">
-      <h2>Physics</h2>
-      <span class="mono" id="physicsHeadPct">0%</span>
+
+      <h2>
+        Physics
+      </h2>
+
+      <span
+        class="mono"
+        id="physicsPct"
+      >
+        0%
+      </span>
+
     </div>
+
   </div>
+
 
   <div class="toolbar">
 
     <input
-      class="search-input"
+      class="search"
       id="physicsSearch"
       placeholder="Search chapters…"
     >
 
-    <div class="filter-seg" data-subject="physics">
-      <button data-filter="all" class="active">All</button>
-      <button data-filter="pending">Pending</button>
-      <button data-filter="done">Done</button>
+    <div
+      class="filter"
+      data-subject="physics"
+    >
+
+      <button
+        data-filter="all"
+        class="active"
+      >
+        All
+      </button>
+
+      <button
+        data-filter="pending"
+      >
+        Pending
+      </button>
+
+      <button
+        data-filter="done"
+      >
+        Done
+      </button>
+
     </div>
 
   </div>
 
-  <button class="btn btn-primary"
-          id="physicsAddBtn"
-          style="margin-bottom:14px;">
+
+  <button
+    class="btn btn-primary"
+    id="physicsAdd"
+  >
     + Add chapter
   </button>
 
+
   <div id="physicsAddForm"></div>
-  <div class="chapter-list" id="physicsList"></div>
+
+  <div
+    class="chapter-list"
+    id="physicsList"
+  ></div>
 
 </section>
 
 
-<!-- ============================= CHEMISTRY ============================= -->
+<!-- ================= CHEMISTRY ================= -->
 
-<section class="panel" id="panel-chemistry">
+<section
+  class="panel"
+  id="panel-chemistry"
+>
 
   <div class="subject-header">
+
     <div class="subject-title">
-      <h2>Chemistry</h2>
-      <span class="mono" id="chemistryHeadPct">0%</span>
+
+      <h2>
+        Chemistry
+      </h2>
+
+      <span
+        class="mono"
+        id="chemistryPct"
+      >
+        0%
+      </span>
+
     </div>
+
   </div>
+
 
   <div class="toolbar">
 
     <input
-      class="search-input"
+      class="search"
       id="chemistrySearch"
       placeholder="Search chapters…"
     >
 
-    <div class="filter-seg" data-subject="chemistry">
-      <button data-filter="all" class="active">All</button>
-      <button data-filter="pending">Pending</button>
-      <button data-filter="done">Done</button>
+    <div
+      class="filter"
+      data-subject="chemistry"
+    >
+
+      <button
+        data-filter="all"
+        class="active"
+      >
+        All
+      </button>
+
+      <button
+        data-filter="pending"
+      >
+        Pending
+      </button>
+
+      <button
+        data-filter="done"
+      >
+        Done
+      </button>
+
     </div>
 
   </div>
 
-  <button class="btn btn-primary"
-          id="chemistryAddBtn"
-          style="margin-bottom:14px;">
+
+  <button
+    class="btn btn-primary"
+    id="chemistryAdd"
+  >
     + Add chapter
   </button>
 
+
   <div id="chemistryAddForm"></div>
-  <div class="chapter-list" id="chemistryList"></div>
+
+  <div
+    class="chapter-list"
+    id="chemistryList"
+  ></div>
 
 </section>
 
 
-<!-- ============================= MATHS ============================= -->
+<!-- ================= MATHEMATICS ================= -->
 
-<section class="panel" id="panel-maths">
+<section
+  class="panel"
+  id="panel-maths"
+>
 
   <div class="subject-header">
+
     <div class="subject-title">
-      <h2>Mathematics</h2>
-      <span class="mono" id="mathsHeadPct">0%</span>
+
+      <h2>
+        Mathematics
+      </h2>
+
+      <span
+        class="mono"
+        id="mathsPct"
+      >
+        0%
+      </span>
+
     </div>
+
   </div>
+
 
   <div class="toolbar">
 
     <input
-      class="search-input"
+      class="search"
       id="mathsSearch"
       placeholder="Search chapters…"
     >
 
-    <div class="filter-seg" data-subject="maths">
-      <button data-filter="all" class="active">All</button>
-      <button data-filter="pending">Pending</button>
-      <button data-filter="done">Done</button>
+    <div
+      class="filter"
+      data-subject="maths"
+    >
+
+      <button
+        data-filter="all"
+        class="active"
+      >
+        All
+      </button>
+
+      <button
+        data-filter="pending"
+      >
+        Pending
+      </button>
+
+      <button
+        data-filter="done"
+      >
+        Done
+      </button>
+
     </div>
 
   </div>
 
-  <button class="btn btn-primary"
-          id="mathsAddBtn"
-          style="margin-bottom:14px;">
+
+  <button
+    class="btn btn-primary"
+    id="mathsAdd"
+  >
     + Add chapter
   </button>
 
+
   <div id="mathsAddForm"></div>
-  <div class="chapter-list" id="mathsList"></div>
+
+  <div
+    class="chapter-list"
+    id="mathsList"
+  ></div>
 
 </section>
 
 
-<!-- ============================= TESTS ============================= -->
+<!-- ================= TESTS ================= -->
 
-<section class="panel" id="panel-tests">
+<section
+  class="panel"
+  id="panel-tests"
+>
 
-  <div class="subject-header">
+  <div class="section-title">
+    Tests
+  </div>
 
-    <div class="subject-title">
-      <h2>Tests</h2>
-      <span class="mono" id="testsHeadCount">0</span>
+
+  <div class="card form-card">
+
+    <div class="test-tabs">
+
+      <button
+        class="active"
+        data-test-type="chapter"
+      >
+        Chapter-wise Test
+      </button>
+
+      <button
+        data-test-type="full"
+      >
+        Full Syllabus Test
+      </button>
+
+    </div>
+
+
+    <div class="form-row">
+
+      <div class="field">
+
+        <label>
+          Test name
+        </label>
+
+        <input
+          id="testName"
+          placeholder="e.g. Electrostatics Test"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Test date
+        </label>
+
+        <input
+          type="date"
+          id="testDate"
+        >
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        id="addTest"
+        style="align-self:end"
+      >
+        Add Test
+      </button>
+
     </div>
 
   </div>
 
-  <div class="test-count-strip">
-    <div class="test-count-number mono" id="testsCompletedCount">0</div>
-    <div class="test-count-label">mock tests given</div>
+
+  <div class="section-title">
+    Scheduled / given tests
   </div>
 
-  <div class="test-tabs">
 
-    <button
-      class="test-type-btn active"
-      data-test-type="chapter">
-      Chapter-wise Test
-    </button>
+  <div class="card form-card">
 
-    <button
-      class="test-type-btn"
-      data-test-type="full">
-      Full Syllabus Test
-    </button>
-
-    <button
-      class="test-type-btn"
-      data-test-type="errors">
-      Common Errors
-    </button>
+    <div
+      class="test-list"
+      id="testList"
+    ></div>
 
   </div>
-
-  <div class="test-add-form" id="testAddForm">
-
-    <input
-      type="text"
-      id="testNameInput"
-      placeholder="Test / chapter name"
-    >
-
-    <input
-      type="date"
-      id="testDateInput"
-    >
-
-    <button
-      class="btn btn-primary"
-      id="addTestBtn">
-      + Add Test
-    </button>
-
-  </div>
-
-  <div class="test-list" id="testList"></div>
 
 </section>
 
 
-<!-- ============================= DATA ============================= -->
+<!-- ================= COMMON ERRORS ================= -->
 
-<section class="panel" id="panel-data">
+<section
+  class="panel"
+  id="panel-errors"
+>
 
-  <div class="section-title">Data</div>
+  <div class="section-title">
+    Common Errors
+  </div>
 
-  <div class="card data-card">
+
+  <div class="card form-card">
+
+    <div class="form-row">
+
+      <div class="field">
+
+        <label>
+          Write the error
+        </label>
+
+        <textarea
+          id="errorText"
+          placeholder="e.g. Forgot sign convention in electrostatics..."
+        ></textarea>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        id="addError"
+        style="align-self:end"
+      >
+        Add Error
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="section-title">
+    Error log
+  </div>
+
+
+  <div class="card form-card">
+
+    <div
+      class="item-list"
+      id="errorList"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= DAILY TARGETS ================= -->
+
+<section
+  class="panel"
+  id="panel-targets"
+>
+
+  <div class="section-title">
+    Daily Targets
+  </div>
+
+
+  <div class="card form-card">
+
+    <div class="form-row">
+
+      <div class="field">
+
+        <label>
+          Target
+        </label>
+
+        <input
+          id="targetText"
+          placeholder="e.g. Complete 40 Physics PYQs"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Date
+        </label>
+
+        <input
+          type="date"
+          id="targetDate"
+        >
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        id="addTarget"
+        style="align-self:end"
+      >
+        Add Target
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="section-title">
+    Target progress
+  </div>
+
+
+  <div class="card form-card">
+
+    <div class="goal-bar-caption">
+
+      <span>
+        Progress Rate
+      </span>
+
+      <strong id="targetRate">
+        0%
+      </strong>
+
+    </div>
+
+
+    <div class="bar">
+
+      <div
+        class="fill"
+        id="targetFill"
+        style="width:0%"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="item-list"
+      id="targetList"
+      style="margin-top:14px"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= DATA ================= -->
+
+<section
+  class="panel"
+  id="panel-data"
+>
+
+  <div class="section-title">
+    Data
+  </div>
+
+
+  <div class="card form-card">
+
+    <div class="field">
+
+      <label>
+        Target Exam Date
+      </label>
+
+      <input
+        type="date"
+        id="examDate"
+      >
+
+    </div>
+
+
+    <br>
+
 
     <div class="data-actions">
 
-      <button class="btn" id="exportBtn">
+      <button
+        class="btn"
+        id="exportBtn"
+      >
         Export as JSON
       </button>
 
-      <button class="btn" id="importBtn">
+
+      <button
+        class="btn"
+        id="importBtn"
+      >
         Import JSON
       </button>
+
 
       <input
         type="file"
         id="importFile"
         accept="application/json"
-        style="display:none;"
+        hidden
       >
 
-      <button class="btn btn-danger" id="resetBtn">
+
+      <button
+        class="btn btn-danger"
+        id="resetBtn"
+      >
         Reset all data
       </button>
 
     </div>
 
+
     <div class="hint">
-      All data is stored only in this browser's local storage.
-      Nothing is sent anywhere. Export regularly to back up your
-      progress or move it to another device.
+      All data is stored locally in this browser.
+      Export regularly to back up or move your progress
+      to another device.
     </div>
 
   </div>
@@ -1291,360 +1590,347 @@ footer{
 
 </main>
 
-<footer>Your data stays on this device.</footer>
+
+<footer>
+  Your data stays on this device.
+</footer>
 
 </div>
 
 
 <script>
-(function(){
 
 "use strict";
 
 
-/* ============================= DEFAULT SYLLABUS ============================= */
+/* =========================================================
+   DEFAULT CHAPTERS
+========================================================= */
 
-var DEFAULT_CHAPTERS = {
+const DEFAULT = {
 
-physics:[
-"Units and Measurements",
-"Motion in a Straight Line",
-"Motion in a Plane",
-"Laws of Motion",
-"Work, Energy and Power",
-"System of Particles and Rotational Motion",
-"Gravitation",
-"Mechanical Properties of Solids",
-"Mechanical Properties of Fluids",
-"Thermal Properties of Matter",
-"Thermodynamics",
-"Kinetic Theory of Gases",
-"Oscillations",
-"Waves",
-"Electric Charges and Fields",
-"Electrostatic Potential and Capacitance",
-"Current Electricity",
-"Moving Charges and Magnetism",
-"Magnetism and Matter",
-"Electromagnetic Induction",
-"Alternating Current",
-"Electromagnetic Waves",
-"Ray Optics and Optical Instruments",
-"Wave Optics",
-"Dual Nature of Radiation and Matter",
-"Atoms",
-"Nuclei",
-"Semiconductor Electronics",
-"Experimental Skills"
-],
+  physics: [
 
-chemistry:[
-"Some Basic Concepts of Chemistry",
-"Structure of Atom",
-"Classification of Elements and Periodicity",
-"Chemical Bonding and Molecular Structure",
-"States of Matter",
-"Thermodynamics",
-"Equilibrium",
-"Redox Reactions",
-"Solutions",
-"Electrochemistry",
-"Chemical Kinetics",
-"Hydrogen",
-"s-Block Elements",
-"p-Block Elements",
-"d and f Block Elements",
-"Coordination Compounds",
-"General Principles of Isolation of Elements",
-"Basic Principles of Organic Chemistry",
-"Hydrocarbons",
-"Haloalkanes and Haloarenes",
-"Alcohols, Phenols and Ethers",
-"Aldehydes, Ketones and Carboxylic Acids",
-"Amines",
-"Biomolecules",
-"Polymers",
-"Chemistry in Everyday Life",
-"Environmental Chemistry"
-],
+    "Units and Measurements",
+    "Motion in a Straight Line",
+    "Motion in a Plane",
+    "Laws of Motion",
+    "Work, Energy and Power",
+    "System of Particles and Rotational Motion",
+    "Gravitation",
+    "Mechanical Properties of Solids",
+    "Mechanical Properties of Fluids",
+    "Thermal Properties of Matter",
+    "Thermodynamics",
+    "Kinetic Theory of Gases",
+    "Oscillations",
+    "Waves",
+    "Electric Charges and Fields",
+    "Electrostatic Potential and Capacitance",
+    "Current Electricity",
+    "Moving Charges and Magnetism",
+    "Magnetism and Matter",
+    "Electromagnetic Induction",
+    "Alternating Current",
+    "Electromagnetic Waves",
+    "Ray Optics and Optical Instruments",
+    "Wave Optics",
+    "Dual Nature of Radiation and Matter",
+    "Atoms",
+    "Nuclei",
+    "Semiconductor Electronics",
+    "Experimental Skills"
 
-maths:[
-"Sets, Relations and Functions",
-"Complex Numbers and Quadratic Equations",
-"Matrices and Determinants",
-"Permutations and Combinations",
-"Binomial Theorem",
-"Sequences and Series",
-"Limits, Continuity and Differentiability",
-"Application of Derivatives",
-"Integral Calculus",
-"Differential Equations",
-"Coordinate Geometry",
-"Three Dimensional Geometry",
-"Vector Algebra",
-"Statistics and Probability",
-"Trigonometry",
-"Mathematical Reasoning"
-]
+  ],
+
+  chemistry: [
+
+    "Some Basic Concepts of Chemistry",
+    "Structure of Atom",
+    "Classification of Elements and Periodicity",
+    "Chemical Bonding and Molecular Structure",
+    "States of Matter",
+    "Thermodynamics",
+    "Equilibrium",
+    "Redox Reactions",
+    "Solutions",
+    "Electrochemistry",
+    "Chemical Kinetics",
+    "Hydrogen",
+    "s-Block Elements",
+    "p-Block Elements",
+    "d and f Block Elements",
+    "Coordination Compounds",
+    "General Principles of Isolation of Elements",
+    "Basic Principles of Organic Chemistry",
+    "Hydrocarbons",
+    "Haloalkanes and Haloarenes",
+    "Alcohols, Phenols and Ethers",
+    "Aldehydes, Ketones and Carboxylic Acids",
+    "Amines",
+    "Biomolecules",
+    "Polymers",
+    "Chemistry in Everyday Life",
+    "Environmental Chemistry"
+
+  ],
+
+  maths: [
+
+    "Sets, Relations and Functions",
+    "Complex Numbers and Quadratic Equations",
+    "Matrices and Determinants",
+    "Permutations and Combinations",
+    "Binomial Theorem",
+    "Sequences and Series",
+    "Limits, Continuity and Differentiability",
+    "Application of Derivatives",
+    "Integral Calculus",
+    "Differential Equations",
+    "Coordinate Geometry",
+    "Three Dimensional Geometry",
+    "Vector Algebra",
+    "Statistics and Probability",
+    "Trigonometry",
+    "Mathematical Reasoning"
+
+  ]
 
 };
 
 
-/* ============================= TASKS ============================= */
+/* =========================================================
+   TASKS
+========================================================= */
 
-var TASK_KEYS = [
+const TASKS = [
+
   "theory",
-  "classillustration",
-  "selectedpyqs",
+  "illustration",
   "revised",
-  "shortnotes"
+  "selectedPYQ",
+  "shortNotes"
+
 ];
 
-var TASK_LABELS = {
+
+const LABELS = {
+
   theory:"Theory",
-  classillustration:"Class Illustration",
-  selectedpyqs:"Selected PYQs",
+  illustration:"Class Illustration",
   revised:"Revised",
-  shortnotes:"Short Notes"
+  selectedPYQ:"Selected PYQs",
+  shortNotes:"Short Notes"
+
 };
 
-var SUBJECT_LABELS = {
-  physics:"Physics",
-  chemistry:"Chemistry",
-  maths:"Mathematics"
+
+const COLORS = {
+
+  physics:"var(--physics)",
+  chemistry:"var(--chemistry)",
+  maths:"var(--maths)"
+
 };
 
-var STORAGE_KEY = "jee-tracker-data-v2";
-var THEME_KEY = "jee-tracker-theme";
 
+const SOFT = {
 
-/* ============================= TEST TYPES ============================= */
+  physics:"var(--physics-soft)",
+  chemistry:"var(--chemistry-soft)",
+  maths:"var(--maths-soft)"
 
-var TEST_TYPE_LABELS = {
-  chapter:"Chapter-wise Test",
-  full:"Full Syllabus Test",
-  errors:"Common Errors"
 };
 
-var currentTestType = "chapter";
+
+const KEY = "jee-tracker-data-v2";
+
+const THEME = "jee-tracker-theme";
 
 
-/* ============================= HELPERS ============================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function uid(){
-  return Date.now().toString(36) +
-         Math.random().toString(36).slice(2,8);
-}
+const uid = () =>
+  Date.now().toString(36) +
+  Math.random().toString(36).slice(2,7);
 
-function emptyTasks(){
 
-  var t = {};
-
-  TASK_KEYS.forEach(function(k){
-    t[k] = false;
-  });
-
-  return t;
-}
+const emptyTasks = () =>
+  Object.fromEntries(
+    TASKS.map(x => [x,false])
+  );
 
 
 function makeChapter(name){
 
   return {
+
     id:uid(),
-    name:name,
+
+    name,
+
     tasks:emptyTasks(),
+
     completedAt:{},
+
     lastRevised:""
+
   };
 
 }
 
 
-function makeTest(type,name,date){
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+function seed(){
 
   return {
-    id:uid(),
-    type:type,
-    name:name,
-    date:date,
-    completed:false,
-    completedAt:null
+
+    subjects:Object.fromEntries(
+
+      Object.entries(DEFAULT).map(
+        ([subject,chapters]) => [
+
+          subject,
+
+          chapters.map(makeChapter)
+
+        ]
+      )
+
+    ),
+
+    tests:[],
+
+    errors:[],
+
+    targets:[],
+
+    goal:{
+      examDate:""
+    }
+
   };
 
 }
 
 
-function seedData(){
+/* =========================================================
+   OLD DATA MIGRATION
+========================================================= */
 
-  var data = {
-    subjects:{},
-    goal:{
-      examDate:""
-    },
-    tests:[]
-  };
+function migrate(data){
 
-  Object.keys(DEFAULT_CHAPTERS).forEach(function(subj){
+  if(!data || !data.subjects){
 
-    data.subjects[subj] =
-      DEFAULT_CHAPTERS[subj].map(makeChapter);
+    return seed();
+
+  }
+
+
+  ["physics","chemistry","maths"].forEach(subject => {
+
+    if(!Array.isArray(data.subjects[subject])){
+
+      data.subjects[subject] = [];
+
+    }
+
+
+    data.subjects[subject].forEach(chapter => {
+
+      chapter.id ??= uid();
+
+      chapter.name ??= "Untitled";
+
+      chapter.tasks ??= {};
+
+      chapter.completedAt ??= {};
+
+      chapter.lastRevised ??= "";
+
+
+      const old = chapter.tasks;
+
+
+      chapter.tasks = {
+
+        theory:
+          !!(old.theory ?? old.lecture),
+
+        illustration:
+          !!(old.illustration ?? old.examples),
+
+        revised:
+          !!(old.revised ?? old.notes),
+
+        selectedPYQ:
+          !!(old.selectedPYQ ?? old.pyq),
+
+        shortNotes:
+          !!old.shortNotes
+
+      };
+
+    });
 
   });
+
+
+  data.tests =
+    Array.isArray(data.tests)
+      ? data.tests
+      : [];
+
+
+  data.errors =
+    Array.isArray(data.errors)
+      ? data.errors
+      : [];
+
+
+  data.targets =
+    Array.isArray(data.targets)
+      ? data.targets
+      : [];
+
+
+  data.goal =
+    data.goal || {
+      examDate:""
+    };
+
+
+  data.goal.examDate =
+    data.goal.examDate || "";
+
 
   return data;
 
 }
 
 
-/* ============================= STATE ============================= */
+/* =========================================================
+   LOAD DATA
+========================================================= */
 
-var state = load();
+let state;
 
+try{
 
-function migrateChapter(ch){
+  state = migrate(
+    JSON.parse(
+      localStorage.getItem(KEY) || "null"
+    )
+  );
 
-  if(!ch.id){
-    ch.id = uid();
-  }
+}catch(error){
 
-  var oldTasks = ch.tasks || {};
-  var newTasks = emptyTasks();
-
-  /*
-    Migration from the old version:
-
-    lecture       -> theory
-    examples      -> class illustration
-    pyq           -> selected PYQs
-    notes         -> revised
-    shortnotes    -> short notes
-
-    DPP is intentionally removed.
-  */
-
-  newTasks.theory =
-    !!(oldTasks.theory !== undefined ?
-       oldTasks.theory :
-       oldTasks.lecture);
-
-  newTasks.classillustration =
-    !!(oldTasks.classillustration !== undefined ?
-       oldTasks.classillustration :
-       oldTasks.examples);
-
-  newTasks.selectedpyqs =
-    !!(oldTasks.selectedpyqs !== undefined ?
-       oldTasks.selectedpyqs :
-       oldTasks.pyq);
-
-  newTasks.revised =
-    !!(oldTasks.revised !== undefined ?
-       oldTasks.revised :
-       oldTasks.notes);
-
-  newTasks.shortnotes =
-    !!oldTasks.shortnotes;
-
-  ch.tasks = newTasks;
-
-  if(!ch.completedAt){
-    ch.completedAt = {};
-  }
-
-  if(typeof ch.lastRevised !== "string"){
-    ch.lastRevised = "";
-  }
-
-  return ch;
-
-}
-
-
-function load(){
-
-  try{
-
-    var raw = localStorage.getItem(STORAGE_KEY);
-
-    /*
-      Also look for the old storage key so existing
-      progress can be migrated.
-    */
-
-    if(!raw){
-      raw = localStorage.getItem("jee-tracker-data-v1");
-    }
-
-    if(!raw){
-      return seedData();
-    }
-
-    var parsed = JSON.parse(raw);
-
-    if(!parsed.subjects){
-
-      return seedData();
-
-    }
-
-    ["physics","chemistry","maths"].forEach(function(s){
-
-      if(!Array.isArray(parsed.subjects[s])){
-        parsed.subjects[s] = [];
-      }
-
-      parsed.subjects[s] =
-        parsed.subjects[s].map(migrateChapter);
-
-    });
-
-
-    if(!parsed.goal){
-      parsed.goal = {examDate:""};
-    }
-
-    if(typeof parsed.goal.examDate !== "string"){
-      parsed.goal.examDate = "";
-    }
-
-
-    if(!Array.isArray(parsed.tests)){
-      parsed.tests = [];
-    }
-
-    parsed.tests.forEach(function(test){
-
-      if(!test.id){
-        test.id = uid();
-      }
-
-      if(!test.type){
-        test.type = "chapter";
-      }
-
-      if(typeof test.name !== "string"){
-        test.name = "";
-      }
-
-      if(typeof test.date !== "string"){
-        test.date = "";
-      }
-
-      if(typeof test.completed !== "boolean"){
-        test.completed = false;
-      }
-
-    });
-
-
-    return parsed;
-
-  }catch(e){
-
-    return seedData();
-
-  }
+  state = seed();
 
 }
 
@@ -1652,1042 +1938,1035 @@ function load(){
 function save(){
 
   localStorage.setItem(
-    STORAGE_KEY,
+    KEY,
     JSON.stringify(state)
   );
 
 }
 
 
-/* ============================= COMPUTATIONS ============================= */
+/* =========================================================
+   CHAPTER PROGRESS
+========================================================= */
 
-function chapterPct(ch){
-
-  var done = 0;
-
-  TASK_KEYS.forEach(function(k){
-
-    if(ch.tasks[k]){
-      done++;
-    }
-
-  });
+function chapterPct(chapter){
 
   return Math.round(
-    (done / TASK_KEYS.length) * 100
+
+    TASKS.filter(
+      key => chapter.tasks[key]
+    ).length
+    /
+    TASKS.length
+    *
+    100
+
   );
 
 }
 
 
-function isChapterComplete(ch){
+function complete(chapter){
 
-  return TASK_KEYS.every(function(k){
-
-    return ch.tasks[k];
-
-  });
+  return TASKS.every(
+    key => chapter.tasks[key]
+  );
 
 }
 
 
-function subjectPct(subj){
+function subjectPct(subject){
 
-  var list = state.subjects[subj];
+  const chapters =
+    state.subjects[subject];
 
-  if(!list.length){
+  if(!chapters.length){
+
     return 0;
+
   }
 
-  var total = 0;
+  return Math.round(
 
-  list.forEach(function(ch){
+    chapters.reduce(
+      (total,chapter) =>
+        total + chapterPct(chapter),
+      0
+    )
+    /
+    chapters.length
 
-    total += chapterPct(ch);
-
-  });
-
-  return Math.round(total / list.length);
-
-}
-
-
-function overallStats(){
-
-  var subjects = [
-    "physics",
-    "chemistry",
-    "maths"
-  ];
-
-  var totalChapters = 0;
-  var completedChapters = 0;
-  var totalTaskPct = 0;
-  var chapterCount = 0;
-
-  subjects.forEach(function(s){
-
-    state.subjects[s].forEach(function(ch){
-
-      totalChapters++;
-      chapterCount++;
-
-      totalTaskPct += chapterPct(ch);
-
-      if(isChapterComplete(ch)){
-        completedChapters++;
-      }
-
-    });
-
-  });
-
-
-  var overallPct =
-    chapterCount
-      ? Math.round(totalTaskPct / chapterCount)
-      : 0;
-
-
-  /*
-    Progress Rate = percentage of chapters
-    that are fully completed.
-  */
-
-  var progressRate =
-    totalChapters
-      ? Math.round(
-          (completedChapters / totalChapters) * 100
-        )
-      : 0;
-
-
-  return {
-
-    overallPct:overallPct,
-
-    progressRate:progressRate,
-
-    totalChapters:totalChapters,
-
-    completedChapters:completedChapters,
-
-    remainingChapters:
-      totalChapters - completedChapters
-
-  };
+  );
 
 }
 
 
-function mockTestsGiven(){
+function overall(){
 
-  return state.tests.filter(function(test){
+  const chapters =
+    Object.values(state.subjects).flat();
 
-    return test.completed;
+  if(!chapters.length){
 
-  }).length;
+    return 0;
 
-}
-
-
-function weakestSubject(){
-
-  var subjects = [
-    "physics",
-    "chemistry",
-    "maths"
-  ];
-
-  var withData = subjects.filter(function(s){
-
-    return state.subjects[s].length > 0;
-
-  });
-
-  if(!withData.length){
-    return null;
   }
 
-  var min = null;
+  return Math.round(
 
-  withData.forEach(function(s){
+    chapters.reduce(
+      (total,chapter) =>
+        total + chapterPct(chapter),
+      0
+    )
+    /
+    chapters.length
 
-    var p = subjectPct(s);
-
-    if(min === null || p < min.pct){
-
-      min = {
-        subj:s,
-        pct:p
-      };
-
-    }
-
-  });
-
-  return min;
+  );
 
 }
 
 
-function daysUntil(dateStr){
+/* =========================================================
+   DAYS LEFT
+========================================================= */
 
-  if(!dateStr){
-    return null;
+function daysLeft(){
+
+  if(!state.goal.examDate){
+
+    return "—";
+
   }
 
-  var target =
-    new Date(dateStr + "T00:00:00");
 
-  var now = new Date();
-
-  now.setHours(0,0,0,0);
-
-  var diff =
-    Math.ceil(
-      (target - now) /
-      (1000*60*60*24)
+  const target =
+    new Date(
+      state.goal.examDate + "T00:00:00"
     );
 
-  return diff;
+
+  const today =
+    new Date(
+      new Date().setHours(0,0,0,0)
+    );
+
+
+  const difference =
+    Math.ceil(
+      (target - today) /
+      86400000
+    );
+
+
+  return Math.max(
+    difference,
+    0
+  );
 
 }
 
 
-/* ============================= ICONS ============================= */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-var ICON_SUN =
-'<circle cx="12" cy="12" r="4"></circle>' +
-'<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+function esc(value){
 
-var ICON_MOON =
-'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  return String(value).replace(
 
-var ICON_CHECK =
-'<polyline points="20 6 9 17 4 12"></polyline>';
+    /[&<>"']/g,
 
-var ICON_EDIT =
-'<path d="M12 20h9"/>' +
-'<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>';
+    character => ({
 
-var ICON_TRASH =
-'<polyline points="3 6 5 6 21 6"/>' +
-'<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>' +
-'<path d="M10 11v6M14 11v6"/>' +
-'<path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>';
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+
+    }[character])
+
+  );
+
+}
 
 
-/* ============================= DASHBOARD ============================= */
-
-var RING_CIRCUMFERENCE =
-  2 * Math.PI * 52;
-
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
 function renderDashboard(){
 
-  var stats = overallStats();
+  const progress =
+    overall();
 
 
-  var ring =
-    document.getElementById("ringFg");
-
-  ring.style.strokeDasharray =
-    RING_CIRCUMFERENCE;
-
-  ring.style.strokeDashoffset =
-    RING_CIRCUMFERENCE *
-    (1 - stats.overallPct / 100);
+  const chapters =
+    Object.values(state.subjects).flat();
 
 
-  document.getElementById("ringPct")
-    .textContent =
-    stats.overallPct + "%";
+  const completed =
+    chapters.filter(
+      complete
+    ).length;
 
 
-  var days =
-    daysUntil(state.goal.examDate);
+  document.getElementById(
+    "ringPct"
+  ).textContent =
+    progress + "%";
 
 
-  document.getElementById("daysLeftVal")
-    .textContent =
-    days === null
-      ? "—"
-      : Math.max(days,0);
+  const circumference =
+    2 * Math.PI * 52;
 
 
-  document.getElementById("chCompletedVal")
-    .textContent =
-    stats.completedChapters;
+  document.getElementById(
+    "ringFg"
+  ).style.strokeDasharray =
+    circumference;
 
 
-  document.getElementById("mockTestsVal")
-    .textContent =
-    mockTestsGiven();
+  document.getElementById(
+    "ringFg"
+  ).style.strokeDashoffset =
+    circumference *
+    (1 - progress / 100);
 
 
-  document.getElementById("goalBarPct")
-    .textContent =
-    stats.overallPct + "%";
+  document.getElementById(
+    "daysLeft"
+  ).textContent =
+    daysLeft();
 
 
-  document.getElementById("goalBarFill")
-    .style.width =
-    stats.overallPct + "%";
+  document.getElementById(
+    "chaptersDone"
+  ).textContent =
+    completed;
 
 
-  document.getElementById("dashboardExamDate")
-    .value =
-    state.goal.examDate || "";
+  document.getElementById(
+    "testsDone"
+  ).textContent =
+    state.tests.filter(
+      test => test.done
+    ).length;
 
 
-  var weak =
-    weakestSubject();
-
-  var weakWrap =
-    document.getElementById("weakBadgeWrap");
-
-
-  if(weak && stats.totalChapters > 0){
-
-    weakWrap.innerHTML =
-      '<span class="weak-badge">' +
-      'Weakest subject: ' +
-      SUBJECT_LABELS[weak.subj] +
-      ' (' + weak.pct + '%)' +
-      '</span>';
-
-  }else{
-
-    weakWrap.innerHTML = "";
-
-  }
+  document.getElementById(
+    "goalPct"
+  ).textContent =
+    progress + "%";
 
 
-  var breakdown =
-    document.getElementById(
-      "subjectBreakdown"
-    );
+  document.getElementById(
+    "goalFill"
+  ).style.width =
+    progress + "%";
 
 
-  var subjects = [
+  /* SUBJECT BREAKDOWN */
+
+  const subjects = [
     "physics",
     "chemistry",
     "maths"
   ];
 
 
-  breakdown.innerHTML =
-    subjects.map(function(s){
+  document.getElementById(
+    "breakdown"
+  ).innerHTML =
 
-      var pct =
-        subjectPct(s);
+    subjects.map(subject => {
 
-      return (
-
-        '<div class="subject-row">' +
-
-          '<span class="subject-dot" ' +
-          'style="background:var(--' +
-          s + ')"></span>' +
-
-          '<span class="subject-row-name">' +
-          SUBJECT_LABELS[s] +
-          '</span>' +
-
-          '<span class="subject-bar-track">' +
-
-            '<span class="subject-bar-fill" ' +
-            'style="width:' + pct +
-            '%;background:var(--' +
-            s + ')"></span>' +
-
-          '</span>' +
-
-          '<span class="subject-row-pct mono">' +
-          pct + '%' +
-          '</span>' +
-
-        '</div>'
-
-      );
-
-    }).join("");
+      const percentage =
+        subjectPct(subject);
 
 
-  var statGrid =
-    document.getElementById("statGrid");
+      return `
 
+        <div class="subject-row">
 
-  var totalTasksCompleted = 0;
-  var totalTasksAll = 0;
+          <span
+            class="dot"
+            style="background:${COLORS[subject]}"
+          ></span>
 
+          <span class="subject-row-name">
+            ${
+              subject[0].toUpperCase()
+              +
+              subject.slice(1)
+            }
+          </span>
 
-  subjects.forEach(function(s){
+          <div class="bar">
 
-    state.subjects[s].forEach(function(ch){
+            <div
+              class="fill"
+              style="
+                width:${percentage}%;
+                background:${COLORS[subject]}
+              "
+            ></div>
 
-      TASK_KEYS.forEach(function(k){
+          </div>
 
-        totalTasksAll++;
+          <span class="subject-row-pct mono">
+            ${percentage}%
+          </span>
 
-        if(ch.tasks[k]){
-          totalTasksCompleted++;
-        }
+        </div>
 
-      });
-
-    });
-
-  });
-
-
-  var tiles = [
-
-    {
-      v:stats.overallPct + "%",
-      k:"Overall progress"
-    },
-
-    {
-      v:stats.progressRate + "%",
-      k:"Progress rate"
-    },
-
-    {
-      v:subjectPct("physics") + "%",
-      k:"Physics progress"
-    },
-
-    {
-      v:subjectPct("chemistry") + "%",
-      k:"Chemistry progress"
-    },
-
-    {
-      v:subjectPct("maths") + "%",
-      k:"Mathematics progress"
-    },
-
-    {
-      v:stats.completedChapters,
-      k:"Chapters completed"
-    },
-
-    {
-      v:mockTestsGiven(),
-      k:"Mock tests given"
-    },
-
-    {
-      v:totalTasksCompleted +
-       "/" +
-       totalTasksAll,
-      k:"Tasks completed"
-    }
-
-  ];
-
-
-  statGrid.innerHTML =
-    tiles.map(function(t){
-
-      return (
-
-        '<div class="card stat-tile">' +
-
-          '<div class="stat-val mono">' +
-          t.v +
-          '</div>' +
-
-          '<div class="stat-key">' +
-          t.k +
-          '</div>' +
-
-        '</div>'
-
-      );
+      `;
 
     }).join("");
+
+
+  /* LOWEST SUBJECT */
+
+  const lowest =
+    subjects.reduce(
+      (a,b) =>
+        subjectPct(b) < subjectPct(a)
+          ? b
+          : a,
+      subjects[0]
+    );
+
+
+  document.getElementById(
+    "weak"
+  ).innerHTML =
+
+    chapters.length
+
+      ? `
+
+        <span class="weak-badge">
+
+          Lowest subject progress:
+          ${
+            lowest[0].toUpperCase()
+            +
+            lowest.slice(1)
+          }
+          (${subjectPct(lowest)}%)
+
+        </span>
+
+      `
+
+      : "";
+
+
+  /* CHAPTER TASK PROGRESS */
+
+  const totalTasks =
+    chapters.length * TASKS.length;
+
+
+  const completedTasks =
+    chapters.reduce(
+      (total,chapter) =>
+        total +
+        TASKS.filter(
+          key => chapter.tasks[key]
+        ).length,
+      0
+    );
+
+
+  /* DAILY TARGET PROGRESS */
+
+  const targetRate =
+    state.targets.length
+
+      ? Math.round(
+          state.targets.filter(
+            target => target.done
+          ).length
+          /
+          state.targets.length
+          *
+          100
+        )
+
+      : 0;
+
+
+  document.getElementById(
+    "stats"
+  ).innerHTML = [
+
+    [
+      progress + "%",
+      "Overall progress"
+    ],
+
+    [
+      subjectPct("physics") + "%",
+      "Physics progress"
+    ],
+
+    [
+      subjectPct("chemistry") + "%",
+      "Chemistry progress"
+    ],
+
+    [
+      subjectPct("maths") + "%",
+      "Mathematics progress"
+    ],
+
+    [
+      completed,
+      "Chapters completed"
+    ],
+
+    [
+      chapters.length - completed,
+      "Chapters remaining"
+    ],
+
+    [
+      completedTasks + "/" + totalTasks,
+      "Chapter tasks completed"
+    ],
+
+    [
+      targetRate + "%",
+      "Progress Rate"
+    ],
+
+    [
+      state.tests.filter(
+        test => test.done
+      ).length,
+      "Mock tests given"
+    ]
+
+  ].map(stat => `
+
+    <div class="card stat-tile">
+
+      <div class="stat-val mono">
+        ${stat[0]}
+      </div>
+
+      <div class="stat-key">
+        ${stat[1]}
+      </div>
+
+    </div>
+
+  `).join("");
 
 }
 
 
-/* ============================= SUBJECT UI ============================= */
+/* =========================================================
+   SUBJECT UI STATE
+========================================================= */
 
-var subjectUiState = {
+const ui = {
 
   physics:{
-    search:"",
-    filter:"all",
-    addOpen:false,
-    editingId:null
+    q:"",
+    f:"all",
+    edit:null,
+    addOpen:false
   },
 
   chemistry:{
-    search:"",
-    filter:"all",
-    addOpen:false,
-    editingId:null
+    q:"",
+    f:"all",
+    edit:null,
+    addOpen:false
   },
 
   maths:{
-    search:"",
-    filter:"all",
-    addOpen:false,
-    editingId:null
+    q:"",
+    f:"all",
+    edit:null,
+    addOpen:false
   }
 
 };
 
 
-function segColor(subj){
+/* =========================================================
+   RENDER SUBJECT
+========================================================= */
 
-  return "var(--" + subj + ")";
+function renderSubject(subject){
 
-}
-
-
-function colorSoft(subj){
-
-  return "var(--" + subj + "-soft)";
-
-}
+  const current =
+    ui[subject];
 
 
-function escapeHtml(s){
-
-  return String(s).replace(
-    /[&<>"']/g,
-    function(c){
-
-      return {
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[c];
-
-    }
-  );
-
-}
+  let chapters =
+    state.subjects[subject];
 
 
-function escapeAttr(s){
-
-  return escapeHtml(s);
-
-}
-
-
-/* ============================= CHAPTER CARD ============================= */
-
-function renderChapterCard(subj,ch){
-
-  var pct =
-    chapterPct(ch);
-
-  var ui =
-    subjectUiState[subj];
-
-  var isEditing =
-    ui.editingId === ch.id;
+  chapters =
+    chapters.filter(
+      chapter =>
+        chapter.name
+          .toLowerCase()
+          .includes(
+            current.q.toLowerCase()
+          )
+    );
 
 
-  var nameHtml =
-    isEditing
+  chapters =
+    chapters.filter(
 
-    ?
+      chapter =>
 
-    '<input class="chapter-name-input" ' +
-    'data-action="name-input" ' +
-    'value="' +
-    escapeAttr(ch.name) +
-    '">'
+        current.f === "all"
 
-    :
-
-    '<span class="chapter-name">' +
-    escapeHtml(ch.name) +
-    '</span>';
-
-
-  var actionsHtml =
-    isEditing
-
-    ?
-
-    '<button class="icon-btn" ' +
-    'data-action="save-name" ' +
-    'title="Save">' +
-
-      '<svg viewBox="0 0 24 24" ' +
-      'fill="none" stroke="currentColor" ' +
-      'stroke-width="2.2" ' +
-      'stroke-linecap="round" ' +
-      'stroke-linejoin="round">' +
-
-        ICON_CHECK +
-
-      '</svg>' +
-
-    '</button>'
-
-    :
-
-    '<button class="icon-btn" ' +
-    'data-action="edit-name" ' +
-    'title="Edit">' +
-
-      '<svg viewBox="0 0 24 24" ' +
-      'fill="none" stroke="currentColor" ' +
-      'stroke-width="2" ' +
-      'stroke-linecap="round" ' +
-      'stroke-linejoin="round">' +
-
-        ICON_EDIT +
-
-      '</svg>' +
-
-    '</button>' +
-
-    '<button class="icon-btn danger" ' +
-    'data-action="delete-chapter" ' +
-    'title="Delete">' +
-
-      '<svg viewBox="0 0 24 24" ' +
-      'fill="none" stroke="currentColor" ' +
-      'stroke-width="2" ' +
-      'stroke-linecap="round" ' +
-      'stroke-linejoin="round">' +
-
-        ICON_TRASH +
-
-      '</svg>' +
-
-    '</button>';
-
-
-  var segsHtml =
-    TASK_KEYS.map(function(k){
-
-      var on =
-        ch.tasks[k];
-
-      return (
-
-        '<span class="seg" style="' +
+        ||
 
         (
-          on
-          ? 'background:' +
-            segColor(subj)
-          : ''
-        ) +
+          current.f === "done"
+          &&
+          complete(chapter)
+        )
 
-        '"></span>'
-
-      );
-
-    }).join("");
-
-
-  var chipsHtml =
-    TASK_KEYS.map(function(k){
-
-      var on =
-        ch.tasks[k];
-
-      return (
-
-        '<label class="check-chip ' +
-        (on ? 'checked' : '') +
-        '" ' +
-
-        'data-action="toggle-task" ' +
-        'data-task="' + k + '" ' +
-
-        'style="' +
+        ||
 
         (
-          on
-          ? 'background:' +
-            colorSoft(subj) +
-            ';border-color:' +
-            segColor(subj)
-          : ''
-        ) +
+          current.f === "pending"
+          &&
+          !complete(chapter)
+        )
 
-        '">' +
-
-          '<span class="box" style="' +
-
-            (
-              on
-              ? 'border-color:' +
-                segColor(subj) +
-                ';background:' +
-                segColor(subj)
-              : ''
-            ) +
-
-          '">' +
-
-            '<svg viewBox="0 0 24 24" ' +
-            'fill="none" ' +
-            'stroke="' +
-            (on ? '#fff' : 'currentColor') +
-            '" ' +
-            'stroke-width="3" ' +
-            'stroke-linecap="round" ' +
-            'stroke-linejoin="round">' +
-
-              ICON_CHECK +
-
-            '</svg>' +
-
-          '</span>' +
-
-          TASK_LABELS[k] +
-
-        '</label>'
-
-      );
-
-    }).join("");
-
-
-  return (
-
-    '<div class="card chapter-card" ' +
-    'data-id="' + ch.id + '">' +
-
-      '<div class="chapter-top">' +
-
-        '<div class="chapter-name-row">' +
-          nameHtml +
-        '</div>' +
-
-        '<div class="chapter-actions">' +
-          actionsHtml +
-        '</div>' +
-
-      '</div>' +
-
-
-      '<div class="chapter-pct-row">' +
-
-        '<span class="chapter-pct mono">' +
-          pct + '%' +
-        '</span>' +
-
-        '<div class="segbar">' +
-          segsHtml +
-        '</div>' +
-
-      '</div>' +
-
-
-      '<div class="checklist">' +
-        chipsHtml +
-      '</div>' +
-
-
-      '<div class="revised-row">' +
-
-        '<span class="revised-label">' +
-          'Last revised' +
-        '</span>' +
-
-        '<input type="date" ' +
-        'class="revised-input" ' +
-        'data-action="revised-date" ' +
-        'value="' +
-        (ch.lastRevised || "") +
-        '">' +
-
-      '</div>' +
-
-    '</div>'
-
-  );
-
-}
-
-
-function renderSubjectPage(subj){
-
-  var ui =
-    subjectUiState[subj];
-
-  var list =
-    state.subjects[subj].slice();
+    );
 
 
   document.getElementById(
-    subj + "HeadPct"
+    subject + "Pct"
   ).textContent =
-    subjectPct(subj) + "%";
+    subjectPct(subject) + "%";
 
 
-  var filtered =
-    list.filter(function(ch){
+  document.getElementById(
+    subject + "List"
+  ).innerHTML =
 
-      var matchesSearch =
-        ch.name
-          .toLowerCase()
-          .indexOf(
-            ui.search.toLowerCase()
-          ) !== -1;
+    chapters.length
 
-      if(!matchesSearch){
-        return false;
-      }
+      ? chapters.map(chapter => {
 
-      if(ui.filter === "pending"){
-        return !isChapterComplete(ch);
-      }
-
-      if(ui.filter === "done"){
-        return isChapterComplete(ch);
-      }
-
-      return true;
-
-    });
+          const editing =
+            current.edit === chapter.id;
 
 
-  var listEl =
+          return `
+
+            <div
+              class="card chapter-card"
+              data-id="${chapter.id}"
+            >
+
+              <div class="chapter-top">
+
+                <div class="chapter-name">
+
+                  ${
+                    editing
+
+                    ? `
+
+                      <input
+                        class="search"
+                        data-name
+                        value="${esc(chapter.name)}"
+                      >
+
+                    `
+
+                    : esc(chapter.name)
+
+                  }
+
+                </div>
+
+
+                <div class="actions">
+
+                  ${
+                    editing
+
+                    ? `
+
+                      <button
+                        class="icon"
+                        data-act="save"
+                      >
+                        ✓
+                      </button>
+
+                    `
+
+                    : `
+
+                      <button
+                        class="icon"
+                        data-act="edit"
+                      >
+                        ✎
+                      </button>
+
+                      <button
+                        class="icon"
+                        data-act="del"
+                      >
+                        ×
+                      </button>
+
+                    `
+                  }
+
+                </div>
+
+              </div>
+
+
+              <div class="chapter-pct-row">
+
+                <span class="chapter-pct mono">
+                  ${chapterPct(chapter)}%
+                </span>
+
+                <div class="segbar">
+
+                  ${
+                    TASKS.map(key => `
+
+                      <span
+                        class="seg"
+                        style="
+                          ${
+                            chapter.tasks[key]
+                            ? "background:" + COLORS[subject]
+                            : ""
+                          }
+                        "
+                      ></span>
+
+                    `).join("")
+                  }
+
+                </div>
+
+              </div>
+
+
+              <div class="checklist">
+
+                ${
+                  TASKS.map(key => `
+
+                    <div
+                      class="check ${
+                        chapter.tasks[key]
+                          ? "checked"
+                          : ""
+                      }"
+                      data-task="${key}"
+                      style="
+                        ${
+                          chapter.tasks[key]
+
+                          ? `
+                            background:${SOFT[subject]};
+                            border-color:${COLORS[subject]};
+                          `
+
+                          : ""
+                        }
+                      "
+                    >
+
+                      <span class="box">
+
+                        ${
+                          chapter.tasks[key]
+                            ? "✓"
+                            : ""
+                        }
+
+                      </span>
+
+                      ${LABELS[key]}
+
+                    </div>
+
+                  `).join("")
+                }
+
+              </div>
+
+
+              <div class="revised-row">
+
+                <span>
+                  Last revised
+                </span>
+
+                <input
+                  class="date"
+                  type="date"
+                  data-revise
+                  value="${chapter.lastRevised || ""}"
+                >
+
+              </div>
+
+            </div>
+
+          `;
+
+        }).join("")
+
+      : `
+
+        <div class="empty">
+          No chapters found.
+        </div>
+
+      `;
+
+
+  const addForm =
     document.getElementById(
-      subj + "List"
+      subject + "AddForm"
     );
 
 
-  if(!filtered.length){
+  addForm.innerHTML =
 
-    listEl.innerHTML =
-      '<div class="empty-state">' +
-      'No chapters found. Try adjusting your search or filter, or add a new chapter above.' +
-      '</div>';
+    current.addOpen
 
-  }else{
+      ? `
 
-    listEl.innerHTML =
-      filtered.map(function(ch){
+        <div class="add-form">
 
-        return renderChapterCard(
-          subj,
-          ch
-        );
+          <input
+            class="search"
+            id="${subject}New"
+            placeholder="New chapter name"
+          >
 
-      }).join("");
+          <button
+            class="btn btn-primary btn-sm"
+            data-add
+          >
+            Add
+          </button>
 
-  }
+          <button
+            class="btn btn-sm"
+            data-cancel
+          >
+            Cancel
+          </button>
 
+        </div>
 
-  var addFormEl =
-    document.getElementById(
-      subj + "AddForm"
-    );
+      `
 
-
-  if(ui.addOpen){
-
-    addFormEl.innerHTML =
-
-      '<div class="add-form">' +
-
-        '<input class="search-input" ' +
-        'id="' + subj + 'NewName" ' +
-        'placeholder="New chapter name" ' +
-        'autofocus>' +
-
-        '<button class="btn btn-primary btn-sm" ' +
-        'data-action="confirm-add">' +
-        'Add' +
-        '</button>' +
-
-        '<button class="btn btn-sm" ' +
-        'data-action="cancel-add">' +
-        'Cancel' +
-        '</button>' +
-
-      '</div>';
-
-
-    var inp =
-      document.getElementById(
-        subj + "NewName"
-      );
-
-    if(inp){
-      inp.focus();
-    }
-
-  }else{
-
-    addFormEl.innerHTML = "";
-
-  }
+      : "";
 
 }
 
 
-/* ============================= TEST RENDER ============================= */
-
-function formatTestDate(dateStr){
-
-  if(!dateStr){
-    return "No date";
-  }
-
-  var d =
-    new Date(dateStr + "T00:00:00");
-
-  return d.toLocaleDateString(
-    undefined,
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }
-  );
-
-}
-
+/* =========================================================
+   RENDER TESTS
+========================================================= */
 
 function renderTests(){
 
-  var filtered =
-    state.tests
-      .filter(function(test){
-
-        return test.type === currentTestType;
-
-      })
-      .sort(function(a,b){
-
-        if(!a.date && !b.date){
-          return 0;
-        }
-
-        if(!a.date){
-          return 1;
-        }
-
-        if(!b.date){
-          return -1;
-        }
-
-        return a.date.localeCompare(b.date);
-
-      });
-
-
-  var listEl =
-    document.getElementById(
-      "testList"
-    );
-
-
   document.getElementById(
-    "testsCompletedCount"
-  ).textContent =
-    mockTestsGiven();
+    "testList"
+  ).innerHTML =
+
+    state.tests.length
+
+      ? state.tests.map(
+          (test,index) => `
+
+            <div
+              class="test-row ${
+                test.done
+                  ? "done"
+                  : ""
+              }"
+            >
+
+              <button
+                class="test-check"
+                data-test="${index}"
+              >
+
+                ${
+                  test.done
+                    ? "✓"
+                    : ""
+                }
+
+              </button>
 
 
-  document.getElementById(
-    "testsHeadCount"
-  ).textContent =
-    state.tests.length;
+              <div class="test-info">
+
+                <div class="test-title">
+                  ${esc(test.name)}
+                </div>
+
+                <div class="test-date">
+
+                  ${
+                    test.type === "chapter"
+                      ? "Chapter-wise Test"
+                      : "Full Syllabus Test"
+                  }
+
+                  ·
+
+                  ${test.date || "No date"}
+
+                </div>
+
+              </div>
 
 
-  if(!filtered.length){
+              <button
+                class="icon"
+                data-test-del="${index}"
+              >
+                ×
+              </button>
 
-    listEl.innerHTML =
-      '<div class="empty-state">' +
-      'No tests added yet. Add your first test above.' +
-      '</div>';
+            </div>
 
-    return;
+          `
+        ).join("")
 
-  }
+      : `
 
+        <div class="empty">
+          No tests added yet.
+        </div>
 
-  listEl.innerHTML =
-    filtered.map(function(test){
-
-      return (
-
-        '<div class="card test-card" ' +
-        'data-id="' + test.id + '">' +
-
-          '<button class="test-check ' +
-          (test.completed ? 'checked' : '') +
-          '" data-action="toggle-test" ' +
-          'aria-label="Mark test as given">' +
-
-            '<svg viewBox="0 0 24 24" ' +
-            'fill="none" ' +
-            'stroke-width="3" ' +
-            'stroke-linecap="round" ' +
-            'stroke-linejoin="round">' +
-
-              ICON_CHECK +
-
-            '</svg>' +
-
-          '</button>' +
-
-
-          '<div class="test-info">' +
-
-            '<div class="test-name">' +
-              escapeHtml(test.name) +
-            '</div>' +
-
-            '<div class="test-date">' +
-              formatTestDate(test.date) +
-            '</div>' +
-
-          '</div>' +
-
-
-          '<div class="test-actions">' +
-
-            '<button class="icon-btn danger" ' +
-            'data-action="delete-test" ' +
-            'title="Delete test">' +
-
-              '<svg viewBox="0 0 24 24" ' +
-              'fill="none" ' +
-              'stroke="currentColor" ' +
-              'stroke-width="2" ' +
-              'stroke-linecap="round" ' +
-              'stroke-linejoin="round">' +
-
-                ICON_TRASH +
-
-              '</svg>' +
-
-            '</button>' +
-
-          '</div>' +
-
-        '</div>'
-
-      );
-
-    }).join("");
+      `;
 
 }
 
 
-/* ============================= RENDER ALL ============================= */
+/* =========================================================
+   RENDER ERRORS + TARGETS
+========================================================= */
 
-function renderAll(){
+function renderItems(){
+
+  /* COMMON ERRORS */
+
+  document.getElementById(
+    "errorList"
+  ).innerHTML =
+
+    state.errors.length
+
+      ? state.errors.map(
+          (error,index) => `
+
+            <div class="item-card">
+
+              <div
+                class="check ${
+                  error.done
+                    ? "checked"
+                    : ""
+                }"
+                data-error="${index}"
+              >
+
+                <span class="box">
+
+                  ${
+                    error.done
+                      ? "✓"
+                      : ""
+                  }
+
+                </span>
+
+
+                <span class="item-text">
+
+                  ${esc(error.text)}
+
+                  <span class="item-meta">
+
+                    ${
+                      error.done
+                        ? "Resolved"
+                        : "Pending"
+                    }
+
+                  </span>
+
+                </span>
+
+              </div>
+
+
+              <button
+                class="icon"
+                data-error-del="${index}"
+              >
+                ×
+              </button>
+
+            </div>
+
+          `
+        ).join("")
+
+      : `
+
+        <div class="empty">
+          No common errors added.
+        </div>
+
+      `;
+
+
+  /* TARGET RATE */
+
+  const doneTargets =
+    state.targets.filter(
+      target => target.done
+    ).length;
+
+
+  const rate =
+    state.targets.length
+
+      ? Math.round(
+          doneTargets
+          /
+          state.targets.length
+          *
+          100
+        )
+
+      : 0;
+
+
+  document.getElementById(
+    "targetRate"
+  ).textContent =
+    rate + "%";
+
+
+  document.getElementById(
+    "targetFill"
+  ).style.width =
+    rate + "%";
+
+
+  /* TARGET LIST */
+
+  document.getElementById(
+    "targetList"
+  ).innerHTML =
+
+    state.targets.length
+
+      ? state.targets.map(
+          (target,index) => `
+
+            <div class="item-card">
+
+              <div
+                class="check ${
+                  target.done
+                    ? "checked"
+                    : ""
+                }"
+                data-target="${index}"
+              >
+
+                <span class="box">
+
+                  ${
+                    target.done
+                      ? "✓"
+                      : ""
+                  }
+
+                </span>
+
+
+                <span class="item-text">
+
+                  ${esc(target.text)}
+
+                  <span class="item-meta">
+
+                    ${target.date || "Everyday"}
+
+                    ·
+
+                    ${
+                      target.done
+                        ? "Done"
+                        : "Pending"
+                    }
+
+                  </span>
+
+                </span>
+
+              </div>
+
+
+              <button
+                class="icon"
+                data-target-del="${index}"
+              >
+                ×
+              </button>
+
+            </div>
+
+          `
+        ).join("")
+
+      : `
+
+        <div class="empty">
+          No daily targets added.
+        </div>
+
+      `;
+
+}
+
+
+/* =========================================================
+   MASTER RENDER
+========================================================= */
+
+function render(){
 
   renderDashboard();
 
@@ -2695,804 +2974,844 @@ function renderAll(){
     "physics",
     "chemistry",
     "maths"
-  ].forEach(renderSubjectPage);
+  ].forEach(renderSubject);
 
   renderTests();
 
+  renderItems();
+
+  document.getElementById(
+    "examDate"
+  ).value =
+    state.goal.examDate || "";
+
 }
 
 
-/* ============================= TABS ============================= */
+/* =========================================================
+   TAB NAVIGATION
+========================================================= */
 
-document.getElementById("tabs")
-.addEventListener("click",function(e){
+document.getElementById(
+  "tabs"
+).onclick = event => {
 
-  var btn =
-    e.target.closest(".tab-btn");
+  const button =
+    event.target.closest(
+      ".tab-btn"
+    );
 
-  if(!btn){
+
+  if(!button){
+
     return;
-  }
-
-
-  document
-    .querySelectorAll(".tab-btn")
-    .forEach(function(b){
-
-      b.classList.remove("active");
-
-    });
-
-
-  btn.classList.add("active");
-
-
-  document
-    .querySelectorAll(".panel")
-    .forEach(function(p){
-
-      p.classList.remove("active");
-
-    });
-
-
-  document
-    .getElementById(
-      "panel-" + btn.dataset.tab
-    )
-    .classList.add("active");
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-});
-
-
-/* ============================= THEME ============================= */
-
-function applyTheme(theme){
-
-  document.documentElement
-    .classList
-    .toggle(
-      "dark",
-      theme === "dark"
-    );
-
-
-  document.getElementById(
-    "themeIcon"
-  ).innerHTML =
-    theme === "dark"
-      ? ICON_SUN
-      : ICON_MOON;
-
-}
-
-
-var savedTheme =
-  localStorage.getItem(THEME_KEY);
-
-var prefersDark =
-  window.matchMedia &&
-  window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-
-
-var currentTheme =
-  savedTheme ||
-  (prefersDark ? "dark" : "light");
-
-
-applyTheme(currentTheme);
-
-
-document.getElementById(
-  "themeToggle"
-).addEventListener(
-  "click",
-  function(){
-
-    currentTheme =
-      currentTheme === "dark"
-        ? "light"
-        : "dark";
-
-    applyTheme(currentTheme);
-
-    localStorage.setItem(
-      THEME_KEY,
-      currentTheme
-    );
 
   }
-);
 
 
-/* ============================= EXAM DATE ============================= */
-
-document.getElementById(
-  "dashboardExamDate"
-).addEventListener(
-  "change",
-  function(e){
-
-    state.goal.examDate =
-      e.target.value;
-
-    save();
-
-    renderDashboard();
-
-  }
-);
-
-
-/* ============================= SUBJECT PANELS ============================= */
-
-function setupSubjectPanel(subj){
-
-  var ui =
-    subjectUiState[subj];
-
-
-  document.getElementById(
-    subj + "Search"
-  ).addEventListener(
-    "input",
-    function(e){
-
-      ui.search =
-        e.target.value;
-
-      renderSubjectPage(subj);
-
-    }
+  document.querySelectorAll(
+    ".tab-btn"
+  ).forEach(
+    tab =>
+      tab.classList.remove(
+        "active"
+      )
   );
 
 
-  document.querySelector(
-    '.filter-seg[data-subject="' +
-    subj +
-    '"]'
-  ).addEventListener(
-    "click",
-    function(e){
-
-      var b =
-        e.target.closest("button");
-
-      if(!b){
-        return;
-      }
-
-      ui.filter =
-        b.dataset.filter;
+  button.classList.add(
+    "active"
+  );
 
 
-      this.querySelectorAll(
-        "button"
-      ).forEach(function(x){
-
-        x.classList.remove(
-          "active"
-        );
-
-      });
-
-
-      b.classList.add("active");
-
-      renderSubjectPage(subj);
-
-    }
+  document.querySelectorAll(
+    ".panel"
+  ).forEach(
+    panel =>
+      panel.classList.remove(
+        "active"
+      )
   );
 
 
   document.getElementById(
-    subj + "AddBtn"
-  ).addEventListener(
-    "click",
-    function(){
-
-      ui.addOpen = true;
-
-      renderSubjectPage(subj);
-
-    }
+    "panel-" + button.dataset.tab
+  ).classList.add(
+    "active"
   );
 
 
-  document.getElementById(
-    subj + "AddForm"
-  ).addEventListener(
-    "click",
-    function(e){
+  scrollTo(0,0);
 
-      var action =
-        e.target.closest(
-          "[data-action]"
-        );
+};
 
-      if(!action){
-        return;
-      }
 
-
-      if(
-        action.dataset.action ===
-        "confirm-add"
-      ){
-
-        var inp =
-          document.getElementById(
-            subj + "NewName"
-          );
-
-        var name =
-          inp.value.trim();
-
-
-        if(name){
-
-          state.subjects[subj]
-            .push(
-              makeChapter(name)
-            );
-
-          save();
-
-        }
-
-
-        ui.addOpen = false;
-
-        renderAll();
-
-      }
-
-
-      else if(
-        action.dataset.action ===
-        "cancel-add"
-      ){
-
-        ui.addOpen = false;
-
-        renderSubjectPage(subj);
-
-      }
-
-    }
-  );
-
-
-  document.getElementById(
-    subj + "AddForm"
-  ).addEventListener(
-    "keydown",
-    function(e){
-
-      if(
-        e.key === "Enter" &&
-        e.target.id ===
-        subj + "NewName"
-      ){
-
-        document.querySelector(
-          '#' + subj +
-          'AddForm [data-action="confirm-add"]'
-        ).click();
-
-      }
-
-
-      else if(
-        e.key === "Escape" &&
-        e.target.id ===
-        subj + "NewName"
-      ){
-
-        document.querySelector(
-          '#' + subj +
-          'AddForm [data-action="cancel-add"]'
-        ).click();
-
-      }
-
-    }
-  );
-
-
-  var listEl =
-    document.getElementById(
-      subj + "List"
-    );
-
-
-  listEl.addEventListener(
-    "click",
-    function(e){
-
-      var card =
-        e.target.closest(
-          ".chapter-card"
-        );
-
-      if(!card){
-        return;
-      }
-
-
-      var id =
-        card.dataset.id;
-
-
-      var chapter =
-        state.subjects[subj]
-        .find(function(c){
-
-          return c.id === id;
-
-        });
-
-
-      if(!chapter){
-        return;
-      }
-
-
-      var chip =
-        e.target.closest(
-          '[data-action="toggle-task"]'
-        );
-
-
-      if(chip){
-
-        var task =
-          chip.dataset.task;
-
-        var newVal =
-          !chapter.tasks[task];
-
-
-        chapter.tasks[task] =
-          newVal;
-
-
-        chapter.completedAt[task] =
-          newVal
-            ? Date.now()
-            : null;
-
-
-        save();
-
-        renderAll();
-
-        return;
-
-      }
-
-
-      var editBtn =
-        e.target.closest(
-          '[data-action="edit-name"]'
-        );
-
-
-      if(editBtn){
-
-        ui.editingId = id;
-
-        renderSubjectPage(subj);
-
-        var inputEl =
-          listEl.querySelector(
-            ".chapter-name-input"
-          );
-
-        if(inputEl){
-
-          inputEl.focus();
-          inputEl.select();
-
-        }
-
-        return;
-
-      }
-
-
-      var saveBtn =
-        e.target.closest(
-          '[data-action="save-name"]'
-        );
-
-
-      if(saveBtn){
-
-        var nameInput =
-          card.querySelector(
-            '[data-action="name-input"]'
-          );
-
-        var newName =
-          nameInput.value.trim();
-
-
-        if(newName){
-          chapter.name =
-            newName;
-        }
-
-
-        ui.editingId = null;
-
-        save();
-
-        renderAll();
-
-        return;
-
-      }
-
-
-      var delBtn =
-        e.target.closest(
-          '[data-action="delete-chapter"]'
-        );
-
-
-      if(delBtn){
-
-        if(
-          window.confirm(
-            'Delete "' +
-            chapter.name +
-            '"? This cannot be undone.'
-          )
-        ){
-
-          state.subjects[subj] =
-            state.subjects[subj]
-              .filter(function(c){
-
-                return c.id !== id;
-
-              });
-
-          save();
-
-          renderAll();
-
-        }
-
-        return;
-
-      }
-
-    }
-  );
-
-
-  listEl.addEventListener(
-    "keydown",
-    function(e){
-
-      if(
-        e.key === "Enter" &&
-        e.target.matches(
-          '[data-action="name-input"]'
-        )
-      ){
-
-        var card =
-          e.target.closest(
-            ".chapter-card"
-          );
-
-        card.querySelector(
-          '[data-action="save-name"]'
-        ).click();
-
-      }
-
-
-      else if(
-        e.key === "Escape" &&
-        e.target.matches(
-          '[data-action="name-input"]'
-        )
-      ){
-
-        ui.editingId = null;
-
-        renderSubjectPage(subj);
-
-      }
-
-    }
-  );
-
-
-  listEl.addEventListener(
-    "change",
-    function(e){
-
-      if(
-        e.target.matches(
-          '[data-action="revised-date"]'
-        )
-      ){
-
-        var card =
-          e.target.closest(
-            ".chapter-card"
-          );
-
-        var id2 =
-          card.dataset.id;
-
-
-        var chapter2 =
-          state.subjects[subj]
-          .find(function(c){
-
-            return c.id === id2;
-
-          });
-
-
-        if(chapter2){
-
-          chapter2.lastRevised =
-            e.target.value;
-
-          save();
-
-        }
-
-      }
-
-    }
-  );
-
-}
-
+/* =========================================================
+   SUBJECT EVENTS
+========================================================= */
 
 [
   "physics",
   "chemistry",
   "maths"
-].forEach(
-  setupSubjectPanel
-);
+].forEach(subject => {
+
+  /* SEARCH */
+
+  document.getElementById(
+    subject + "Search"
+  ).oninput = event => {
+
+    ui[subject].q =
+      event.target.value;
+
+    renderSubject(subject);
+
+  };
 
 
-/* ============================= TEST TYPE TABS ============================= */
+  /* FILTER */
 
-document.querySelectorAll(
-  ".test-type-btn"
-).forEach(function(btn){
+  document.querySelector(
+    `.filter[data-subject="${subject}"]`
+  ).onclick = event => {
 
-  btn.addEventListener(
-    "click",
-    function(){
-
-      currentTestType =
-        this.dataset.testType;
+    const button =
+      event.target.closest(
+        "button"
+      );
 
 
-      document
-        .querySelectorAll(
-          ".test-type-btn"
+    if(!button){
+
+      return;
+
+    }
+
+
+    ui[subject].f =
+      button.dataset.filter;
+
+
+    document.querySelectorAll(
+      `.filter[data-subject="${subject}"] button`
+    ).forEach(
+      button =>
+        button.classList.remove(
+          "active"
         )
-        .forEach(function(b){
-
-          b.classList.remove(
-            "active"
-          );
-
-        });
-
-
-      this.classList.add("active");
-
-      renderTests();
-
-    }
-  );
-
-});
-
-
-/* ============================= ADD TEST ============================= */
-
-document.getElementById(
-  "addTestBtn"
-).addEventListener(
-  "click",
-  function(){
-
-    var nameInput =
-      document.getElementById(
-        "testNameInput"
-      );
-
-    var dateInput =
-      document.getElementById(
-        "testDateInput"
-      );
-
-
-    var name =
-      nameInput.value.trim();
-
-    var date =
-      dateInput.value;
-
-
-    if(!name){
-
-      name =
-        TEST_TYPE_LABELS[
-          currentTestType
-        ];
-
-    }
-
-
-    state.tests.push(
-      makeTest(
-        currentTestType,
-        name,
-        date
-      )
     );
 
 
-    save();
-
-    nameInput.value = "";
-    dateInput.value = "";
-
-    renderAll();
-
-  }
-);
+    button.classList.add(
+      "active"
+    );
 
 
-/* ============================= TEST LIST EVENTS ============================= */
+    renderSubject(subject);
 
-document.getElementById(
-  "testList"
-).addEventListener(
-  "click",
-  function(e){
-
-    var card =
-      e.target.closest(
-        ".test-card"
-      );
-
-    if(!card){
-      return;
-    }
+  };
 
 
-    var id =
-      card.dataset.id;
+  /* ADD CHAPTER */
+
+  document.getElementById(
+    subject + "Add"
+  ).onclick = () => {
+
+    ui[subject].addOpen =
+      true;
+
+    renderSubject(subject);
+
+  };
 
 
-    var test =
-      state.tests.find(function(t){
+  /* ADD FORM */
 
-        return t.id === id;
+  document.getElementById(
+    subject + "AddForm"
+  ).onclick = event => {
 
-      });
+    if(
+      event.target.closest(
+        "[data-add]"
+      )
+    ){
 
-
-    if(!test){
-      return;
-    }
-
-
-    var toggle =
-      e.target.closest(
-        '[data-action="toggle-test"]'
-      );
-
-
-    if(toggle){
-
-      test.completed =
-        !test.completed;
-
-      test.completedAt =
-        test.completed
-          ? Date.now()
-          : null;
-
-      save();
-
-      renderAll();
-
-      return;
-
-    }
+      const input =
+        document.getElementById(
+          subject + "New"
+        );
 
 
-    var deleteBtn =
-      e.target.closest(
-        '[data-action="delete-test"]'
-      );
+      const name =
+        input.value.trim();
 
 
-    if(deleteBtn){
+      if(name){
 
-      if(
-        window.confirm(
-          'Delete this test?'
-        )
-      ){
-
-        state.tests =
-          state.tests.filter(
-            function(t){
-
-              return t.id !== id;
-
-            }
-          );
+        state.subjects[subject].push(
+          makeChapter(name)
+        );
 
         save();
 
-        renderAll();
+      }
+
+
+      ui[subject].addOpen =
+        false;
+
+      render();
+
+    }
+
+
+    if(
+      event.target.closest(
+        "[data-cancel]"
+      )
+    ){
+
+      ui[subject].addOpen =
+        false;
+
+      renderSubject(subject);
+
+    }
+
+  };
+
+
+  /* CHAPTER CLICK */
+
+  document.getElementById(
+    subject + "List"
+  ).onclick = event => {
+
+    const card =
+      event.target.closest(
+        ".chapter-card"
+      );
+
+
+    if(!card){
+
+      return;
+
+    }
+
+
+    const chapter =
+      state.subjects[subject]
+        .find(
+          chapter =>
+            chapter.id ===
+            card.dataset.id
+        );
+
+
+    if(!chapter){
+
+      return;
+
+    }
+
+
+    /* CHECK TASK */
+
+    const task =
+      event.target.closest(
+        "[data-task]"
+      );
+
+
+    if(task){
+
+      const key =
+        task.dataset.task;
+
+
+      chapter.tasks[key] =
+        !chapter.tasks[key];
+
+
+      chapter.completedAt[key] =
+        chapter.tasks[key]
+          ? Date.now()
+          : null;
+
+
+      save();
+
+      render();
+
+      return;
+
+    }
+
+
+    /* EDIT */
+
+    if(
+      event.target.closest(
+        "[data-act=edit]"
+      )
+    ){
+
+      ui[subject].edit =
+        chapter.id;
+
+      renderSubject(subject);
+
+      return;
+
+    }
+
+
+    /* SAVE EDIT */
+
+    if(
+      event.target.closest(
+        "[data-act=save]"
+      )
+    ){
+
+      const input =
+        card.querySelector(
+          "[data-name]"
+        );
+
+
+      const name =
+        input.value.trim();
+
+
+      if(name){
+
+        chapter.name =
+          name;
+
+      }
+
+
+      ui[subject].edit =
+        null;
+
+      save();
+
+      render();
+
+      return;
+
+    }
+
+
+    /* DELETE */
+
+    if(
+      event.target.closest(
+        "[data-act=del]"
+      )
+    ){
+
+      if(
+        confirm(
+          `Delete "${chapter.name}"?`
+        )
+      ){
+
+        state.subjects[subject] =
+          state.subjects[subject]
+            .filter(
+              item =>
+                item.id !==
+                chapter.id
+            );
+
+        save();
+
+        render();
 
       }
 
     }
 
-  }
-);
+  };
 
 
-/* ============================= TEST ENTER KEY ============================= */
+  /* LAST REVISED DATE */
 
-document.getElementById(
-  "testNameInput"
-).addEventListener(
-  "keydown",
-  function(e){
+  document.getElementById(
+    subject + "List"
+  ).onchange = event => {
 
-    if(e.key === "Enter"){
+    if(
+      event.target.matches(
+        "[data-revise]"
+      )
+    ){
 
-      document.getElementById(
-        "addTestBtn"
-      ).click();
+      const card =
+        event.target.closest(
+          ".chapter-card"
+        );
+
+
+      const chapter =
+        state.subjects[subject]
+          .find(
+            chapter =>
+              chapter.id ===
+              card.dataset.id
+          );
+
+
+      chapter.lastRevised =
+        event.target.value;
+
+
+      save();
 
     }
 
+  };
+
+});
+
+
+/* =========================================================
+   TESTS
+========================================================= */
+
+let testType =
+  "chapter";
+
+
+document.querySelector(
+  ".test-tabs"
+).onclick = event => {
+
+  const button =
+    event.target.closest(
+      "button"
+    );
+
+
+  if(!button){
+
+    return;
+
   }
-);
 
 
-/* ============================= DATA EXPORT ============================= */
+  testType =
+    button.dataset.testType;
+
+
+  document.querySelectorAll(
+    ".test-tabs button"
+  ).forEach(
+    button =>
+      button.classList.remove(
+        "active"
+      )
+  );
+
+
+  button.classList.add(
+    "active"
+  );
+
+};
+
+
+document.getElementById(
+  "addTest"
+).onclick = () => {
+
+  const name =
+    document.getElementById(
+      "testName"
+    ).value.trim();
+
+
+  const date =
+    document.getElementById(
+      "testDate"
+    ).value;
+
+
+  if(!name || !date){
+
+    alert(
+      "Enter test name and date."
+    );
+
+    return;
+
+  }
+
+
+  state.tests.push({
+
+    id:uid(),
+
+    name,
+
+    date,
+
+    type:testType,
+
+    done:false
+
+  });
+
+
+  save();
+
+
+  document.getElementById(
+    "testName"
+  ).value = "";
+
+
+  render();
+
+};
+
+
+document.getElementById(
+  "testList"
+).onclick = event => {
+
+  const testIndex =
+    event.target.closest(
+      "[data-test]"
+    )?.dataset.test;
+
+
+  if(testIndex !== undefined){
+
+    state.tests[testIndex].done =
+      !state.tests[testIndex].done;
+
+    save();
+
+    render();
+
+    return;
+
+  }
+
+
+  const deleteIndex =
+    event.target.closest(
+      "[data-test-del]"
+    )?.dataset.testDel;
+
+
+  if(
+    deleteIndex !== undefined
+    &&
+    confirm("Delete this test?")
+  ){
+
+    state.tests.splice(
+      deleteIndex,
+      1
+    );
+
+    save();
+
+    render();
+
+  }
+
+};
+
+
+/* =========================================================
+   COMMON ERRORS
+========================================================= */
+
+document.getElementById(
+  "addError"
+).onclick = () => {
+
+  const text =
+    document.getElementById(
+      "errorText"
+    ).value.trim();
+
+
+  if(!text){
+
+    return;
+
+  }
+
+
+  state.errors.push({
+
+    id:uid(),
+
+    text,
+
+    done:false
+
+  });
+
+
+  save();
+
+
+  document.getElementById(
+    "errorText"
+  ).value = "";
+
+
+  render();
+
+};
+
+
+document.getElementById(
+  "errorList"
+).onclick = event => {
+
+  const index =
+    event.target.closest(
+      "[data-error]"
+    )?.dataset.error;
+
+
+  if(index !== undefined){
+
+    state.errors[index].done =
+      !state.errors[index].done;
+
+    save();
+
+    render();
+
+    return;
+
+  }
+
+
+  const deleteIndex =
+    event.target.closest(
+      "[data-error-del]"
+    )?.dataset.errorDel;
+
+
+  if(
+    deleteIndex !== undefined
+    &&
+    confirm(
+      "Delete this error?"
+    )
+  ){
+
+    state.errors.splice(
+      deleteIndex,
+      1
+    );
+
+    save();
+
+    render();
+
+  }
+
+};
+
+
+/* =========================================================
+   DAILY TARGETS
+========================================================= */
+
+document.getElementById(
+  "addTarget"
+).onclick = () => {
+
+  const text =
+    document.getElementById(
+      "targetText"
+    ).value.trim();
+
+
+  const date =
+    document.getElementById(
+      "targetDate"
+    ).value;
+
+
+  if(!text){
+
+    return;
+
+  }
+
+
+  state.targets.push({
+
+    id:uid(),
+
+    text,
+
+    date,
+
+    done:false
+
+  });
+
+
+  save();
+
+
+  document.getElementById(
+    "targetText"
+  ).value = "";
+
+
+  render();
+
+};
+
+
+document.getElementById(
+  "targetList"
+).onclick = event => {
+
+  const index =
+    event.target.closest(
+      "[data-target]"
+    )?.dataset.target;
+
+
+  if(index !== undefined){
+
+    state.targets[index].done =
+      !state.targets[index].done;
+
+    save();
+
+    render();
+
+    return;
+
+  }
+
+
+  const deleteIndex =
+    event.target.closest(
+      "[data-target-del]"
+    )?.dataset.targetDel;
+
+
+  if(
+    deleteIndex !== undefined
+    &&
+    confirm(
+      "Delete this target?"
+    )
+  ){
+
+    state.targets.splice(
+      deleteIndex,
+      1
+    );
+
+    save();
+
+    render();
+
+  }
+
+};
+
+
+/* =========================================================
+   EXAM DATE
+========================================================= */
+
+document.getElementById(
+  "examDate"
+).onchange = event => {
+
+  state.goal.examDate =
+    event.target.value;
+
+  save();
+
+  renderDashboard();
+
+};
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+document.getElementById(
+  "themeToggle"
+).onclick = () => {
+
+  document.documentElement
+    .classList
+    .toggle("dark");
+
+
+  localStorage.setItem(
+
+    THEME,
+
+    document.documentElement
+      .classList
+      .contains("dark")
+
+      ? "dark"
+
+      : "light"
+
+  );
+
+};
+
+
+if(
+  localStorage.getItem(THEME)
+  ===
+  "dark"
+){
+
+  document.documentElement
+    .classList
+    .add("dark");
+
+}
+
+
+/* =========================================================
+   EXPORT
+========================================================= */
 
 document.getElementById(
   "exportBtn"
-).addEventListener(
-  "click",
-  function(){
+).onclick = () => {
 
-    var blob =
+  const anchor =
+    document.createElement("a");
+
+
+  const url =
+    URL.createObjectURL(
+
       new Blob(
+
         [
           JSON.stringify(
             state,
@@ -3500,237 +3819,144 @@ document.getElementById(
             2
           )
         ],
+
         {
-          type:"application/json"
+          type:
+            "application/json"
         }
-      );
+
+      )
+
+    );
 
 
-    var url =
-      URL.createObjectURL(blob);
+  anchor.href = url;
 
 
-    var a =
-      document.createElement("a");
+  anchor.download =
+    "jee-tracker-backup-" +
+    new Date()
+      .toISOString()
+      .slice(0,10) +
+    ".json";
 
 
-    var dateTag =
-      new Date()
-        .toISOString()
-        .slice(0,10);
+  anchor.click();
 
 
-    a.href = url;
+  URL.revokeObjectURL(
+    url
+  );
 
-    a.download =
-      "jee-tracker-backup-" +
-      dateTag +
-      ".json";
-
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
-
-  }
-);
+};
 
 
-/* ============================= DATA IMPORT ============================= */
+/* =========================================================
+   IMPORT
+========================================================= */
 
 document.getElementById(
   "importBtn"
-).addEventListener(
-  "click",
-  function(){
+).onclick = () => {
 
-    document.getElementById(
-      "importFile"
-    ).click();
+  document.getElementById(
+    "importFile"
+  ).click();
 
-  }
-);
+};
 
 
 document.getElementById(
   "importFile"
-).addEventListener(
-  "change",
-  function(e){
+).onchange = event => {
 
-    var file =
-      e.target.files[0];
-
-    if(!file){
-      return;
-    }
+  const file =
+    event.target.files[0];
 
 
-    var reader =
-      new FileReader();
+  if(!file){
 
-
-    reader.onload =
-      function(ev){
-
-        try{
-
-          var parsed =
-            JSON.parse(
-              ev.target.result
-            );
-
-
-          if(
-            !parsed.subjects ||
-            !parsed.goal
-          ){
-
-            throw new Error(
-              "Invalid file"
-            );
-
-          }
-
-
-          [
-            "physics",
-            "chemistry",
-            "maths"
-          ].forEach(function(s){
-
-            if(
-              !Array.isArray(
-                parsed.subjects[s]
-              )
-            ){
-
-              parsed.subjects[s] = [];
-
-            }
-
-
-            parsed.subjects[s] =
-              parsed.subjects[s]
-                .map(migrateChapter);
-
-          });
-
-
-          if(
-            typeof parsed.goal.examDate !==
-            "string"
-          ){
-
-            parsed.goal.examDate = "";
-
-          }
-
-
-          if(
-            !Array.isArray(parsed.tests)
-          ){
-
-            parsed.tests = [];
-
-          }
-
-
-          parsed.tests.forEach(
-            function(test){
-
-              if(!test.id){
-                test.id = uid();
-              }
-
-              if(!test.type){
-                test.type = "chapter";
-              }
-
-              if(typeof test.name !== "string"){
-                test.name = "";
-              }
-
-              if(typeof test.date !== "string"){
-                test.date = "";
-              }
-
-              if(typeof test.completed !== "boolean"){
-                test.completed = false;
-              }
-
-            }
-          );
-
-
-          state = parsed;
-
-          save();
-
-          renderAll();
-
-
-          alert(
-            "Data imported successfully."
-          );
-
-
-        }catch(err){
-
-          alert(
-            "Could not import this file. Please make sure it's a valid JEE Tracker export."
-          );
-
-        }
-
-
-        e.target.value = "";
-
-      };
-
-
-    reader.readAsText(file);
+    return;
 
   }
-);
 
 
-/* ============================= RESET ============================= */
+  const reader =
+    new FileReader();
 
-document.getElementById(
-  "resetBtn"
-).addEventListener(
-  "click",
-  function(){
 
-    if(
-      window.confirm(
-        "This will permanently delete all your progress, tests and target date, and reset to the default syllabus. Continue?"
-      )
-    ){
+  reader.onload = () => {
+
+    try{
 
       state =
-        seedData();
+        migrate(
+          JSON.parse(
+            reader.result
+          )
+        );
+
 
       save();
 
-      renderAll();
+      render();
+
+
+      alert(
+        "Data imported successfully."
+      );
+
+    }catch(error){
+
+      alert(
+        "Invalid JEE Tracker JSON file."
+      );
 
     }
 
+
+    event.target.value = "";
+
+  };
+
+
+  reader.readAsText(file);
+
+};
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+document.getElementById(
+  "resetBtn"
+).onclick = () => {
+
+  if(
+    confirm(
+      "Reset all progress, tests, errors and targets?"
+    )
+  ){
+
+    state =
+      seed();
+
+    save();
+
+    render();
+
   }
-);
+
+};
 
 
-/* ============================= INIT ============================= */
+/* =========================================================
+   INITIAL RENDER
+========================================================= */
 
-renderAll();
+render();
 
-})();
 </script>
 
 </body>
